@@ -1,2 +1,15 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #258BA1;
+  --color-menuActiveColor: #025263;
+}
+
+body{
+  box-sizing: border-box;
+}
+
+/* Remove Scroll Bars */
+.sidebar::-webkit-scrollbar{
+  display: none;  
+}
