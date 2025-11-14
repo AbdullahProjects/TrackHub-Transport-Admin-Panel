@@ -40,17 +40,7 @@ const DashboardStatistics = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // If data not fetched before, then get data otherwise load from cached
-    if (
-      stats.drivers !== null &&
-      stats.buses !== null &&
-      stats.students !== null &&
-      stats.reports !== null
-    ) {
-      return;
-    }
-
-    const loadsData = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
         const data = await getAllStats();
@@ -62,7 +52,7 @@ const DashboardStatistics = () => {
       }
     };
 
-    loadsData();
+    fetchData();
   }, []);
 
   return (
@@ -113,7 +103,7 @@ const StatsContainer = (props) => {
         )}
       </div>
       <div className="col2 px-3 py-2 bg-[#BFDEFF] rounded-md flex justify-center items-center self-center">
-        <img src={props.icon} alt="Icon" className="w-6 h-6" />
+        <img src={props.icon} alt="Icon" className="w-6 h-6 object-contain" />
       </div>
     </div>
   );
@@ -121,8 +111,8 @@ const StatsContainer = (props) => {
 
 const Shimmer = () => (
   <div className="flex flex-col gap-3 animate-pulse w-full">
-    <div className="h-8 w-16 bg-gray-100 rounded-md"></div>
-    <div className="h-4 w-24 bg-gray-100 rounded-md"></div>
+    <div className="h-8 w-16 bg-gray-200 rounded-md"></div>
+    <div className="h-4 w-24 bg-gray-200 rounded-md"></div>
   </div>
 );
 
