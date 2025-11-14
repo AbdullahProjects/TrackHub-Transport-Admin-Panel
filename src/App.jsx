@@ -21,7 +21,7 @@ const App = () => {
       <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
       <div className="flex-1 flex flex-col lg:ml-[10%]">
         <AppBar onMenuClick={toggleSidebar} adminName={adminName} />
-        <main className="flex-1 overflow-y-auto pt-16 bg-white">
+        <main className="flex-1 overflow-y-auto pt-16 bg-bgLight">
           <AppRoutes />
         </main>
       </div>

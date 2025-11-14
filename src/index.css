@@ -3,6 +3,8 @@
 @theme {
   --color-primary: #258BA1;
   --color-menuActiveColor: #025263;
+  --color-bgLight: #f5f9fa;
+  --color-textLight: #4B5768;
 }
 
 body{

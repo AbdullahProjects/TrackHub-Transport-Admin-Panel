@@ -7,6 +7,11 @@ import BusMenuIcon from "../../assets/menu_icons/bus_icon.png";
 import OrganizationMenuIcon from "../../assets/menu_icons/organization_icon.png";
 import ReportMenuIcon from "../../assets/menu_icons/report_icon.png";
 import NotificationMenuIcon from "../../assets/menu_icons/notification_icon.png";
+// Import Dashboard Stats Icon
+import DriverIcon from "../../assets/icons/driver_icon.png";
+import BusIcon from "../../assets/icons/buses_icon.png";
+import EducationCapIcon from "../../assets/icons/education_cap.png";
+import ReportIcon from "../../assets/icons/report_icon.png";
 
 class Images {
   // Logo
@@ -19,6 +24,12 @@ class Images {
   static notificationMenuIcon = NotificationMenuIcon;
   static reportMenuIcon = ReportMenuIcon;
   static organizationMenuIcon = OrganizationMenuIcon;
+
+  // Dashboard Stats Icon
+  static driverIcon = DriverIcon;
+  static busIcon = BusIcon;
+  static educationCapIcon = EducationCapIcon;
+  static reportIcon = ReportIcon;
 }
 
 export default Images;

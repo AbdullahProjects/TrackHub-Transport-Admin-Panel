@@ -1,13 +1,17 @@
-import React from 'react';
+import React from "react";
+import DashboardStatistics from "./dashboard_components/DashboardStatistics";
+import OngoingBuses from "./dashboard_components/OngoingBuses";
 
 const Dashboard = () => {
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
-      <p className="text-gray-600">Welcome to the Dashboard. This is where you can view your transport admin overview.</p>
+      {/* Statistics */}
+      <DashboardStatistics />
+
+      {/* Ongoing Buses */}
+      {/* <OngoingBuses /> */}
     </div>
   );
 };
 
 export default Dashboard;
-
