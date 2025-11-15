@@ -87,6 +87,9 @@ const DashboardStatistics = () => {
   );
 };
 
+export default DashboardStatistics;
+
+// Helper Components
 const StatsContainer = (props) => {
   return (
     <div className="single-stats-container bg-white shadow-md shadow-black/5 rounded-md flex flex-row px-4 py-5">
@@ -102,7 +105,7 @@ const StatsContainer = (props) => {
           <Shimmer />
         )}
       </div>
-      <div className="col2 px-3 py-2 bg-[#BFDEFF] rounded-md flex justify-center items-center self-center">
+      <div className="col2 px-3 py-2.5 bg-[#BFDEFF] rounded-md flex justify-center items-center self-center">
         <img src={props.icon} alt="Icon" className="w-6 h-6 object-contain" />
       </div>
     </div>
@@ -115,5 +118,3 @@ const Shimmer = () => (
     <div className="h-4 w-24 bg-gray-200 rounded-md"></div>
   </div>
 );
-
-export default DashboardStatistics;

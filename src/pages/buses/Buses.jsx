@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import BusForm from "./BusForm";
+import AppButton from "../../components/AppButton";
+import { Heading } from "../../components/HeadingAndSubheading";
+import BusesStatistics from "./buses_components/BusesStatistics";
+import BusesTable from "./buses_components/BusesTable";
 
 const Buses = () => {
   const [showForm, setShowForm] = useState(false);
@@ -25,30 +29,17 @@ const Buses = () => {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Buses</h1>
-          <p className="text-gray-600">
-            Manage your bus fleet. Track bus information, maintenance, and
-            assignments.
-          </p>
-        </div>
-        <button
-          onClick={handleAddBus}
-          className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-500 transition-colors font-medium shadow-md"
-        >
-          + Add Bus
-        </button>
+    <div className="buses p-8 mb-12">
+      <BusesStatistics />
+      <div className="mt-8 flex flex-row justify-between">
+        <Heading text={"Bus Management"} />
+        <AppButton text={"Add Bus"} onTap={() => console.log("Add Bus Tap")}/>
       </div>
-
-      {/* Bus list/component will go here */}
-      <div className="mt-8">
-        <p className="text-gray-500">Bus list will be displayed here...</p>
+      <div className="bus-table">
+        <BusesTable/>
       </div>
     </div>
   );
 };
 
 export default Buses;
-

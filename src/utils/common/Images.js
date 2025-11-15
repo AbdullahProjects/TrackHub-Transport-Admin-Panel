@@ -1,5 +1,5 @@
 // Import Logo
-import Logo from '../../assets/logo/logo.png';
+import Logo from "../../assets/logo/logo.png";
 // Import Menu Icons
 import DashboardMenuIcon from "../../assets/menu_icons/dashboard_icon.png";
 import DriverMenuIcon from "../../assets/menu_icons/driver_icon.png";
@@ -12,6 +12,9 @@ import DriverIcon from "../../assets/icons/driver_icon.png";
 import BusIcon from "../../assets/icons/buses_icon.png";
 import EducationCapIcon from "../../assets/icons/education_cap.png";
 import ReportIcon from "../../assets/icons/report_icon.png";
+// Import Bus Status Icon
+import ActiveIcon from "../../assets/icons/active_icon.png";
+import MaintenanceIcon from "../../assets/icons/maintenance_icon.png";
 
 class Images {
   // Logo
@@ -30,6 +33,10 @@ class Images {
   static busIcon = BusIcon;
   static educationCapIcon = EducationCapIcon;
   static reportIcon = ReportIcon;
+
+  // Bus Status Icon
+  static activeBusIcon = ActiveIcon;
+  static maintenanceIcon = MaintenanceIcon;
 }
 
 export default Images;

@@ -5,6 +5,8 @@
   --color-menuActiveColor: #025263;
   --color-bgLight: #f5f9fa;
   --color-textLight: #4B5768;
+  --color-tableLightBorder: #E1E8ED;
+  --color-tableDarkBorder: #b8b6b6;
 }
 
 body{
