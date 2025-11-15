@@ -15,6 +15,8 @@ import ReportIcon from "../../assets/icons/report_icon.png";
 // Import Bus Status Icon
 import ActiveIcon from "../../assets/icons/active_icon.png";
 import MaintenanceIcon from "../../assets/icons/maintenance_icon.png";
+// Import Dummy Images
+import DummyBusImage from "../../assets/images/bus_image.png";
 
 class Images {
   // Logo
@@ -37,6 +39,9 @@ class Images {
   // Bus Status Icon
   static activeBusIcon = ActiveIcon;
   static maintenanceIcon = MaintenanceIcon;
+
+  // Dummy Images
+  static dummyBusImage = DummyBusImage;
 }
 
 export default Images;

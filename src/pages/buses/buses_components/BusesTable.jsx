@@ -2,13 +2,14 @@ import React from "react";
 import { MdModeEdit } from "react-icons/md";
 import { AiFillDelete } from "react-icons/ai";
 import { GrPrevious } from "react-icons/gr";
+import { Link } from "react-router";
 
 const BusesTable = () => {
-  const tableData = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+  const tableData = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
   return (
     <div>
-      <div className="buses-table-container bg-white mt-4 rounded-md shadow-sm shadow-black/5 overflow-x-auto">
-        <table className="w-full">
+      <div className="buses-table-container overflow-x-scroll lg:overflow-x-auto bg-white mt-4 rounded-md shadow-sm shadow-black/5">
+        <table className="w-[150%] lg:w-full">
           <thead className="border-b-2 border-tableDarkBorder">
             <tr className="text-left">
               <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
@@ -37,8 +38,11 @@ const BusesTable = () => {
           </thead>
           <tbody>
             {tableData.map((data, index) => (
-              <tr key={index} className="border-b border-tableLightBorder hover:cursor-pointer hover:bg-gray-50">
-                <td className="px-2 py-3 text-[14px]">1</td>
+              <tr
+                key={index}
+                className="border-b border-tableLightBorder hover:cursor-pointer hover:bg-gray-50"
+              >
+                <td className="px-2 pl-5 py-3 text-[14px]">{index + 1}</td>
                 <td className="px-2 py-3 text-[14px]">BUS1234</td>
                 <td className="px-2 py-3 text-[14px]">John Doe</td>
                 <td className="px-2 py-3 text-[14px]">Active</td>
@@ -48,7 +52,9 @@ const BusesTable = () => {
                 <td className="px-2 py-3 text-[14px]">
                   <div className="flex flex-row gap-2">
                     <div className="icon border border-menuActiveColor rounded-sm p-1 cursor-pointer transition-all duration-200 hover:bg-primary hover:border-primary hover:text-white">
-                      <MdModeEdit />
+                      <Link to={`/buses/edit/${index+1}`}>
+                        <MdModeEdit />
+                      </Link>
                     </div>
                     <div className="icon border border-menuActiveColor rounded-sm p-1 cursor-pointer transition-all duration-200 hover:bg-red-600 hover:border-red-600 hover:text-white">
                       <AiFillDelete />
@@ -64,8 +70,13 @@ const BusesTable = () => {
       {/* Pagination */}
       <div className="table-pagination mt-4 flex flex-row items-center justify-end gap-4">
         <div>
-          <label htmlFor="rowsPerPage" className="text-textLight text-[14px]">Rows per page:</label>
-          <select id="rowsPerPage" className="rounded-sm px-1 py-1 text-[14px] ml-2 border border-tableDarkBorder">
+          <label htmlFor="rowsPerPage" className="text-textLight text-[14px]">
+            Rows per page:
+          </label>
+          <select
+            id="rowsPerPage"
+            className="rounded-sm px-1 py-1 text-[14px] ml-2 border border-tableDarkBorder"
+          >
             <option>10</option>
             <option>25</option>
             <option>50</option>

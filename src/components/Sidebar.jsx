@@ -32,6 +32,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     if (path === "/") {
       return location.pathname === "/";
     }
+    console.log(location.pathname, path, location.pathname.startsWith(path));
     return location.pathname.startsWith(path);
   };
 

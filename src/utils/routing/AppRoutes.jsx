@@ -2,10 +2,11 @@ import { Routes, Route } from "react-router";
 import RouteNames from "./RouteNames";
 import Dashboard from "../../pages/dashboard/Dashboard";
 import Drivers from "../../pages/drivers/Drivers";
-import Buses from "../../pages/buses/Buses";
+import Buses from "../../pages/buses/buses_pages/AllBuses/Buses";
 import Organization from "../../pages/organization/Organization";
 import Report from "../../pages/report/Report";
 import Notification from "../../pages/notification/Notification";
+import EditBus from "../../pages/buses/buses_pages/EditBus/EditBus";
 
 const AppRoutes = () => {
   return (
@@ -16,6 +17,7 @@ const AppRoutes = () => {
       <Route path={RouteNames.organization} element={<Organization />} />
       <Route path={RouteNames.report} element={<Report />} />
       <Route path={RouteNames.notification} element={<Notification />} />
+      <Route path={RouteNames.editBus} element={<EditBus />} />
     </Routes>
   );
 };

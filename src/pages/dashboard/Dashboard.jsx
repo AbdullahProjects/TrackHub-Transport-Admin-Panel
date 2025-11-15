@@ -4,7 +4,7 @@ import OngoingBuses from "./dashboard_components/OngoingBuses";
 
 const Dashboard = () => {
   return (
-    <div className="p-8">
+    <div>
       {/* Statistics */}
       <DashboardStatistics />
 
