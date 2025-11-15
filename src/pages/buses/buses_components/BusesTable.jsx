@@ -1,11 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdModeEdit } from "react-icons/md";
 import { AiFillDelete } from "react-icons/ai";
 import { GrPrevious } from "react-icons/gr";
 import { Link } from "react-router";
+import ViewBusDetails from "./ViewBusDetails";
+import DeleteBus from "./DeleteBus";
 
 const BusesTable = () => {
+  const [viewBusDetail, setViewBusDetail] = useState(false);
+  const [deleteBus, setDeleteBus] = useState(false);
   const tableData = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+
+  const showBusDetails = () => {
+    setDeleteBus(false);
+    setViewBusDetail(true);
+  };
+
+  const hideBusDetails = () => {
+    setViewBusDetail(false);
+  };
+
+  const showDeleteBus = () => {
+    setViewBusDetail(false);
+    setDeleteBus(true);
+  };
+
+  const hideDeleteBus = () => {
+    setDeleteBus(false);
+  };
+
   return (
     <div>
       <div className="buses-table-container overflow-x-scroll lg:overflow-x-auto bg-white mt-4 rounded-md shadow-sm shadow-black/5">
@@ -41,6 +64,7 @@ const BusesTable = () => {
               <tr
                 key={index}
                 className="border-b border-tableLightBorder hover:cursor-pointer hover:bg-gray-50"
+                onClick={showBusDetails}
               >
                 <td className="px-2 pl-5 py-3 text-[14px]">{index + 1}</td>
                 <td className="px-2 py-3 text-[14px]">BUS1234</td>
@@ -51,12 +75,21 @@ const BusesTable = () => {
                 <td className="px-2 py-3 text-[14px]">10</td>
                 <td className="px-2 py-3 text-[14px]">
                   <div className="flex flex-row gap-2">
-                    <div className="icon border border-menuActiveColor rounded-sm p-1 cursor-pointer transition-all duration-200 hover:bg-primary hover:border-primary hover:text-white">
-                      <Link to={`/buses/edit/${index+1}`}>
+                    <div
+                      onClick={(e) => e.stopPropagation()}
+                      className="icon border border-menuActiveColor rounded-sm p-1 cursor-pointer transition-all duration-200 hover:bg-primary hover:border-primary hover:text-white"
+                    >
+                      <Link to={`/buses/edit/${index + 1}`}>
                         <MdModeEdit />
                       </Link>
                     </div>
-                    <div className="icon border border-menuActiveColor rounded-sm p-1 cursor-pointer transition-all duration-200 hover:bg-red-600 hover:border-red-600 hover:text-white">
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        showDeleteBus();
+                      }}
+                      className="icon border border-menuActiveColor rounded-sm p-1 cursor-pointer transition-all duration-200 hover:bg-red-600 hover:border-red-600 hover:text-white"
+                    >
                       <AiFillDelete />
                     </div>
                   </div>
@@ -93,6 +126,14 @@ const BusesTable = () => {
           </button>
         </div>
       </div>
+
+      {/* View Bus Details Dialog */}
+      {viewBusDetail && !deleteBus && (
+        <ViewBusDetails onClose={hideBusDetails} />
+      )}
+
+      {/* Delete Bus Dialog */}
+      {deleteBus && !viewBusDetail && <DeleteBus onClose={hideDeleteBus} />}
     </div>
   );
 };

@@ -5,6 +5,7 @@ class RouteNames {
     static organization = '/organization';
     static report = '/reports';
     static notification = '/notifications';
+    static addBus = '/buses/add';
     static editBus = '/buses/edit/:busId';
 }
 

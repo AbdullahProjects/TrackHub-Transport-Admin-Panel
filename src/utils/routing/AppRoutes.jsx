@@ -6,6 +6,7 @@ import Buses from "../../pages/buses/buses_pages/AllBuses/Buses";
 import Organization from "../../pages/organization/Organization";
 import Report from "../../pages/report/Report";
 import Notification from "../../pages/notification/Notification";
+import AddBus from "../../pages/buses/buses_pages/AddBus/AddBus";
 import EditBus from "../../pages/buses/buses_pages/EditBus/EditBus";
 
 const AppRoutes = () => {
@@ -17,6 +18,7 @@ const AppRoutes = () => {
       <Route path={RouteNames.organization} element={<Organization />} />
       <Route path={RouteNames.report} element={<Report />} />
       <Route path={RouteNames.notification} element={<Notification />} />
+      <Route path={RouteNames.addBus} element={<AddBus />} />
       <Route path={RouteNames.editBus} element={<EditBus />} />
     </Routes>
   );

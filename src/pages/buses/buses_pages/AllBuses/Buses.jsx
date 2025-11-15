@@ -1,29 +1,17 @@
 import React, { useState } from "react";
-import BusForm from "../AddBus/AddBus";
 import AppButton from "../../../../components/AppButton";
 import { Heading } from "../../../../components/HeadingAndSubheading";
 import BusesStatistics from "../../buses_components/BusesStatistics";
 import BusesTable from "../../buses_components/BusesTable";
+import { useNavigate } from "react-router";
+import RouteNames from "../../../../utils/routing/RouteNames";
 
 const Buses = () => {
-  const [showForm, setShowForm] = useState(false);
+  const navigate = useNavigate();
 
-  const handleAddBus = () => {
-    setShowForm(true);
+  const navigateToAddBus = () => {
+    navigate(RouteNames.addBus);
   };
-
-  const handleCancel = () => {
-    setShowForm(false);
-  };
-
-  const handleSubmit = (formData) => {
-    console.log("Bus data:", formData);
-    setShowForm(false);
-  };
-
-  if (showForm) {
-    return <BusForm onCancel={handleCancel} onSubmit={handleSubmit} />;
-  }
 
   return (
     <div className="buses mb-25 lg:mb-14">
@@ -33,7 +21,7 @@ const Buses = () => {
           <Heading text={"Bus Management"} />
           <AppButton
             text={"Add Bus"}
-            onTap={handleAddBus}
+            onTap={navigateToAddBus}
           />
         </div>
         <div className="bus-table">
