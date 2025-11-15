@@ -97,13 +97,13 @@ const StatsContainer = (props) => {
         {props.loading !== true ? (
           <>
             <h1 className="font-bold text-[28px] text-black">{props.value}</h1>
-            <p className="text-[14px] text-textLight">
-              {props.text ? props.text : 0}
-            </p>
           </>
         ) : (
           <Shimmer />
         )}
+        <p className="text-[14px] text-textLight">
+          {props.text ? props.text : 0}
+        </p>
       </div>
       <div className="col2 px-3 py-2.5 bg-[#BFDEFF] rounded-md flex justify-center items-center self-center">
         <img src={props.icon} alt="Icon" className="w-6 h-6 object-contain" />
@@ -113,8 +113,7 @@ const StatsContainer = (props) => {
 };
 
 const Shimmer = () => (
-  <div className="flex flex-col gap-3 animate-pulse w-full">
-    <div className="h-8 w-16 bg-gray-200 rounded-md"></div>
-    <div className="h-4 w-24 bg-gray-200 rounded-md"></div>
+  <div className="animate-pulse w-full mb-2">
+    <div className="h-7 w-15 bg-gray-200 rounded-md"></div>
   </div>
 );

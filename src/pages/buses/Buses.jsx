@@ -30,13 +30,18 @@ const Buses = () => {
 
   return (
     <div className="buses p-8 mb-12">
-      <BusesStatistics />
-      <div className="mt-8 flex flex-row justify-between">
-        <Heading text={"Bus Management"} />
-        <AppButton text={"Add Bus"} onTap={() => console.log("Add Bus Tap")}/>
-      </div>
-      <div className="bus-table">
-        <BusesTable/>
+      <div>
+        <BusesStatistics />
+        <div className="mt-8 flex flex-row justify-between">
+          <Heading text={"Bus Management"} />
+          <AppButton
+            text={"Add Bus"}
+            onTap={() => console.log("Add Bus Tap")}
+          />
+        </div>
+        <div className="bus-table">
+          <BusesTable />
+        </div>
       </div>
     </div>
   );

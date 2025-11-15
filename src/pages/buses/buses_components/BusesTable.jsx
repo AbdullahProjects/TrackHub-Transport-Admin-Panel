@@ -37,7 +37,7 @@ const BusesTable = () => {
           </thead>
           <tbody>
             {tableData.map((data, index) => (
-              <tr className="border-b border-tableLightBorder">
+              <tr key={index} className="border-b border-tableLightBorder hover:cursor-pointer hover:bg-gray-50">
                 <td className="px-2 py-3 text-[14px]">1</td>
                 <td className="px-2 py-3 text-[14px]">BUS1234</td>
                 <td className="px-2 py-3 text-[14px]">John Doe</td>

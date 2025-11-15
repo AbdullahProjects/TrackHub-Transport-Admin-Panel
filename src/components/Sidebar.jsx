@@ -56,7 +56,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       >
         <div>
           {/* Menu Items */}
-          <nav className="space-y-1">
+          <nav>
             {menuItems.map((item) => (
               <Link
                 key={item.path}
