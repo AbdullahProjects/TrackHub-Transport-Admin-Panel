@@ -40,13 +40,10 @@ const AddBus = () => {
             alt="Bus Image"
             className="w-[110px] h-auto rounded-full"
           />
-          {/* <AppButton
-            text="Save Changes"
-            onTap={() => console.log("Saved Changes")}
-          /> */}
         </div>
         <form onSubmit={handleSubmit} className="w-full space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Bus Number */}
             <div>
               <label
                 htmlFor="busNumber"
@@ -62,7 +59,7 @@ const AddBus = () => {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                placeholder="Enter bus number"
+                placeholder="e.g. LHR-1234"
               />
             </div>
 
@@ -177,4 +174,3 @@ const AddBus = () => {
 };
 
 export default AddBus;
-

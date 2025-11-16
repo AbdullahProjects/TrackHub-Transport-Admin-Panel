@@ -17,6 +17,8 @@ import ActiveIcon from "../../assets/icons/active_icon.png";
 import MaintenanceIcon from "../../assets/icons/maintenance_icon.png";
 // Import Dummy Images
 import DummyBusImage from "../../assets/images/bus_image.png";
+// Import Illustrations
+import LoginPageIllustration from "../../assets/images/login_page_illustration.png";
 
 class Images {
   // Logo
@@ -42,6 +44,9 @@ class Images {
 
   // Dummy Images
   static dummyBusImage = DummyBusImage;
+
+  // Illustrations
+  static loginPageIllustration = LoginPageIllustration;
 }
 
 export default Images;

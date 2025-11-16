@@ -3,10 +3,15 @@ import { Routes, Route } from "react-router";
 import Sidebar from "./components/Sidebar";
 import AppBar from "./components/AppBar";
 import AppRoutes from "./utils/routing/AppRoutes";
+import Login from "./pages/login/login_pages/Login";
+import { ToastContainer } from "react-toastify";
+import Images from "./utils/common/Images";
+import { MoonLoader } from "react-spinners";
 
 const App = () => {
+  const [isLogin, setIsLogin] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const adminName = "Abdullah Khan";
+  const adminName = "abdullah@gmail.com";
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -15,6 +20,21 @@ const App = () => {
   const closeSidebar = () => {
     setSidebarOpen(false);
   };
+
+  if (!isLogin) {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen w-full gap-5">
+        <img src={Images.logo} alt="Logo" className="w-[200px]" />
+        <MoonLoader
+          color={"var(--color-primary)"}
+          loading={true}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-white">
@@ -25,6 +45,7 @@ const App = () => {
           <AppRoutes />
         </main>
       </div>
+      <ToastContainer />
     </div>
   );
 };

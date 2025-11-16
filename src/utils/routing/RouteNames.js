@@ -1,4 +1,5 @@
 class RouteNames {
+    static login = '/login';
     static dashboard = '/';
     static drivers = '/drivers';
     static buses = '/buses';
