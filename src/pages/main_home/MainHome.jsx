@@ -6,9 +6,14 @@ import AppRoutes from "../../utils/routing/AppRoutes";
 import { ToastContainer } from "react-toastify";
 import { useLocation } from "react-router";
 import Login from "../login/login_pages/Login";
+import { useSelector } from "react-redux";
 
 const MainHome = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const adminData = useSelector((state) => state.auth.adminData);
+  const organizationData = useSelector(
+    (state) => state.organization.organizationData
+  );
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -21,7 +26,13 @@ const MainHome = () => {
   const location = useLocation();
   const isLoginRoute = location.pathname === "/login";
 
-  if (isLoginRoute) {
+  if (isLoginRoute && (adminData === null || organizationData === null)) {
+    if (adminData === null) {
+      alert("Please login to continue.");
+    } else if (organizationData === null) {
+      alert("Organization data not found. Please contact support.");
+    }
+
     return (
       <>
         <Login />

@@ -8,18 +8,19 @@ import {
   clearAdminData,
   setLoading,
 } from "./redux_store/slices/auth/AuthSlice";
+import {
+  setOrganizationData,
+  clearOrganizationData,
+} from "./redux_store/slices/organization/OrganizationSlice";
 import { getUserDetails } from "./pages/login/firebase/LoginFirebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from "react-router";
 import { auth } from "./firebase/firebase";
-import RouteNames from "./utils/routing/RouteNames";
-import AppRoutes from "./utils/routing/AppRoutes";
 import MainHome from "./pages/main_home/MainHome";
+import { getOrganizationDetails } from "./pages/organization/firebase/OrganizationFirebase";
 
 const App = () => {
-  const { loading } = useSelector((state) => state.auth);
+  const loading = useSelector((state) => state.auth.loading);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(setLoading(true));
@@ -27,12 +28,21 @@ const App = () => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (!user) {
         dispatch(clearAdminData());
+        dispatch(clearOrganizationData());
         dispatch(setLoading(false));
         return;
       }
 
+      // Get Admin Profile Details from Firebase Firestore
       const userData = await getUserDetails(user.uid);
       dispatch(setAdminData(userData || null));
+      console.log("User Data Fetched:", userData);
+      // Get Organization Details from Firebase Firestore
+      const organizationData = await getOrganizationDetails(
+        userData.organizationId
+      );
+      dispatch(setOrganizationData(organizationData || null));
+      console.log("Organization Data Fetched:", organizationData);
       dispatch(setLoading(false));
     });
 
@@ -54,7 +64,7 @@ const App = () => {
     );
   }
 
-  return <MainHome/>;
+  return <MainHome />;
 };
 
 export default App;

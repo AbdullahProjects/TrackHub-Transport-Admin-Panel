@@ -3,7 +3,7 @@ import RouteNames from "./RouteNames";
 import Dashboard from "../../pages/dashboard/Dashboard";
 import Drivers from "../../pages/drivers/Drivers";
 import Buses from "../../pages/buses/buses_pages/AllBuses/Buses";
-import Organization from "../../pages/organization/Organization";
+import Organization from "../../pages/organization/organization_pages/Organization";
 import Report from "../../pages/report/Report";
 import Notification from "../../pages/notification/Notification";
 import AddBus from "../../pages/buses/buses_pages/AddBus/AddBus";

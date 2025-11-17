@@ -17,6 +17,7 @@ import ActiveIcon from "../../assets/icons/active_icon.png";
 import MaintenanceIcon from "../../assets/icons/maintenance_icon.png";
 // Import Dummy Images
 import DummyBusImage from "../../assets/images/bus_image.png";
+import DummyUniImage from "../../assets/images/uni_logo.png";
 // Import Illustrations
 import LoginPageIllustration from "../../assets/images/login_page_illustration.png";
 
@@ -44,6 +45,7 @@ class Images {
 
   // Dummy Images
   static dummyBusImage = DummyBusImage;
+  static dummyUniImage = DummyUniImage;
 
   // Illustrations
   static loginPageIllustration = LoginPageIllustration;
