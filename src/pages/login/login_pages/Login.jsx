@@ -5,13 +5,17 @@ import { useState } from "react";
 import { GoEye } from "react-icons/go";
 import { LuEyeClosed } from "react-icons/lu";
 import { loginUser, getUserDetails } from "../firebase/LoginFirebase";
-import { AdminModel, adminModelFirestoreConvertor } from "../model/AdminModel";
-import "./style.css";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setAdminData } from "../../../redux_store/slices/auth/AuthSlice";
+import "./style.css";
+import RouteNames from "../../../utils/routing/RouteNames";
+import { useNavigate } from "react-router";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "uet-admin@gmail.com",
@@ -32,18 +36,16 @@ const Login = () => {
     setLoading(true);
     try {
       const user = await loginUser(formData.email, formData.password);
+      if(user)
       console.log("User logged in with ID:", user.uid);
       const userDetails = await getUserDetails(user.uid);
-      if (!userDetails) {
-        throw new Error("User details not found");
-      }
+    
       console.log("User details fetched:", userDetails);
-      const adminModel = adminModelFirestoreConvertor.fromFirestore({...userDetails});
-      setAdmin(adminModel);
-      console.log("Logged in user:" + admin.email);
+      dispatch(setAdminData(userDetails));
+      navigate(RouteNames.dashboard);
     } catch (error) {
       console.error("Login failed:", error);
-      toast.error("Login failed. " + (error.message || ""));
+      toast.error(error.message.split("Firebase: ")[1] || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }

@@ -2,10 +2,21 @@ import React from "react";
 import { Link, useLocation } from "react-router";
 import Images from "../utils/common/Images";
 import RouteNames from "../utils/routing/RouteNames";
-import { IoCloseSharp } from "react-icons/io5";
+import { AiOutlineLogout } from "react-icons/ai";
+import { logoutUser } from "../pages/login/firebase/LoginFirebase";
+import { useDispatch } from "react-redux";
+import { clearAdminData } from "../redux_store/slices/auth/AuthSlice";
+import { useNavigate } from "react-router";
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
+  const logoutHandler = async () => {
+    await logoutUser();
+    dispatch(clearAdminData());
+    navigate(RouteNames.login);
+  }
 
   const menuItems = [
     {
@@ -32,7 +43,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     if (path === "/") {
       return location.pathname === "/";
     }
-    console.log(location.pathname, path, location.pathname.startsWith(path));
+    // console.log(location.pathname, path, location.pathname.startsWith(path));
     return location.pathname.startsWith(path);
   };
 
@@ -51,7 +62,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         className={`
           sidebar fixed top-0 left-0 h-screen bg-primary text-white overflow-y-auto z-50
           transition-transform duration-300 ease-in-out lg:shadow-lg shadow-gray-200
-          w-[180px] lg:w-[10%]
+          w-[180px] lg:w-[155px]
           ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
       >
@@ -77,6 +88,16 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <span className="font-medium text-[14px]">{item.label}</span>
               </Link>
             ))}
+
+            <div className="w-full h-px bg-gray-300"></div>
+
+            {/* Logout */}
+            <div onClick={logoutHandler} className="flex flex-row gap-2 items-center justify-center py-8 hover:cursor-pointer">
+              <AiOutlineLogout />
+              <h1 className="text-center">
+                Logout
+              </h1>
+            </div>
           </nav>
         </div>
       </div>

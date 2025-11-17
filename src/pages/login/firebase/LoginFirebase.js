@@ -1,9 +1,9 @@
 import { doc, getDoc } from "firebase/firestore";
 import { db, auth } from "../../../firebase/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import FirebaseCollections from "../../../utils/common/FirebaseCollectionNames";
 
-const loginUser = async ( email, password ) => {
+const loginUser = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -35,4 +35,13 @@ const getUserDetails = async (userId) => {
   }
 };
 
-export { loginUser, getUserDetails };
+const logoutUser = async () => {
+  try {
+    await signOut(auth);
+  } catch (err) {
+    console.error("Error during logout:", err);
+    throw err;
+  }
+};
+
+export { loginUser, getUserDetails, logoutUser };

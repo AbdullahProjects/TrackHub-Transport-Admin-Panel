@@ -9,10 +9,12 @@ import Notification from "../../pages/notification/Notification";
 import AddBus from "../../pages/buses/buses_pages/AddBus/AddBus";
 import Login from "../../pages/login/login_pages/Login";
 import EditBus from "../../pages/buses/buses_pages/EditBus/EditBus";
+import MainHome from "../../pages/main_home/MainHome";
 
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path={RouteNames.mainHome} element={<MainHome />} />
       <Route path={RouteNames.dashboard} element={<Dashboard />} />
       <Route path={RouteNames.drivers} element={<Drivers />} />
       <Route path={RouteNames.buses} element={<Buses />} />
