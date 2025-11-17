@@ -41,7 +41,7 @@ const Organization = () => {
             <div>
               <p className="text-[13px] text-gray-500">Organization Name</p>
               <p className="text-lg font-semibold text-gray-800">
-                {organizationData.name}
+                {organizationData?.name || ""}
               </p>
             </div>
           </div>
@@ -54,7 +54,7 @@ const Organization = () => {
             <div>
               <p className="text-[13px] text-gray-500">Organization Code</p>
               <p className="text-lg font-semibold text-gray-800">
-                {organizationData.code}
+                {organizationData?.code || ""}
               </p>
             </div>
           </div>
@@ -67,7 +67,7 @@ const Organization = () => {
             <div>
               <p className="text-[13px] text-gray-500">Admin Email</p>
               <p className="text-lg font-semibold text-gray-800">
-                {adminData.email}
+                {adminData?.email || ""}
               </p>
             </div>
           </div>
