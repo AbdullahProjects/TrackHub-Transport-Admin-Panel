@@ -9,6 +9,8 @@ class RouteNames {
     static notification = '/notifications';
     static addBus = '/buses/add';
     static editBus = '/buses/edit/:busId';
+    static addDriver = '/drivers/add';
+    static editDriver = '/drivers/edit/:driverId';
 }
 
 export default RouteNames;

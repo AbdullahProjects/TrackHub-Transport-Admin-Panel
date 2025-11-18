@@ -1,0 +1,198 @@
+import React, { useEffect, useState } from "react";
+import { MdModeEdit } from "react-icons/md";
+import { AiFillDelete } from "react-icons/ai";
+import { GrPrevious } from "react-icons/gr";
+import Images from "../../../utils/common/Images";
+import { Link } from "react-router";
+import DeleteDriver from "./DeleteDriver";
+import { useSelector } from "react-redux";
+import { getAllDrivers } from "../firebase/DriversFirebase";
+import { toast } from "react-toastify";
+import { BeatLoader } from "react-spinners";
+import { useDispatch } from "react-redux";
+import { setDriversData } from "../../../redux_store/slices/drivers/DriversSlide";
+import ViewDriverDetails from "./ViewDriverDetails";
+
+const DriversTable = () => {
+  const adminData = useSelector((state) => state.auth.adminData);
+  const driversData = useSelector((state) => state.drivers.driversData);
+  const dispatch = useDispatch();
+
+  // const [busesData, setBusesData] = useState([]);
+  const [getDriversLoading, setGetDriversLoading] = useState(false);
+  const [viewDriverDetail, setViewDriverDetail] = useState(false);
+  const [viewDriverDetailData, setViewDriverDetailData] = useState(null);
+  const [deleteDriverId, setDeleteDriverId] = useState(null);
+  const [deleteDriverLoading, setDeleteDriverLoading] = useState(false);
+  const [deleteDriver, setDeleteDriver] = useState(false);
+
+  const showDriverDetails = (data) => {
+    setDeleteDriver(false);
+    setViewDriverDetailData(data);
+    setViewDriverDetail(true);
+  };
+
+  const hideDriverDetails = () => {
+    setViewDriverDetail(false);
+  };
+
+  const showDeleteDriver = (id) => {
+    setViewDriverDetail(false);
+    setDeleteDriverId(id);
+    setDeleteDriver(true);
+  };
+
+  const hideDeleteDriver = () => {
+    setDeleteDriver(false);
+  };
+
+  useEffect(() => {
+    const fetchDrivers = async () => {
+      try {
+        if (driversData.length > 0) return;
+        setGetDriversLoading(true);
+        const drivers = await getAllDrivers(adminData.organizationId);
+        dispatch(setDriversData(drivers));
+      } catch (error) {
+        console.error("Error fetching buses: ", error);
+        toast.error("Error fetching buses: " + error.message);
+      } finally {
+        setGetDriversLoading(false);
+      }
+    };
+
+    fetchDrivers();
+  }, []);
+
+  return (
+    <div>
+      <div className="drivers-table-container overflow-x-auto lg:overflow-x-auto bg-white mt-4 rounded-md shadow-sm shadow-black/5">
+        {getDriversLoading ? (
+          <div className="flex flex-col gap-3 py-12 justify-center items-center">
+            <BeatLoader color={"var(--color-primary)"} />
+            <p className="text-textLight text-[14px]">Getting Drivers...</p>
+          </div>
+        ) : driversData.length === 0 ? (
+          <div className="flex flex-col gap-3 py-12 justify-center items-center">
+            <div className="bg-primary p-5 rounded-full w-18 h-18 flex items-center justify-center">
+              <img src={Images.driverMenuIcon} alt="Driver Icon" />
+            </div>
+            <h2 className="mt-4 text-xl font-medium text-gray-800">
+              No Drivers Added Yet
+            </h2>
+            <p className="text-textLight max-w-xs mt-1 text-sm text-center">
+              You haven’t added any drivers to your organization. Start by adding
+              your first driver to begin managing your fleet.
+            </p>
+          </div>
+        ) : (
+          <table className="w-[150%] lg:w-full">
+            <thead className="border-b-2 border-tableDarkBorder">
+              <tr className="text-left">
+                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                  Sr.No
+                </th>
+                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                  Driver Name
+                </th>
+                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                  Phone Number
+                </th>
+                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                  Experience
+                </th>
+                <th className="px-2 py-3 text-[14px]">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {driversData.map((data, index) => (
+                <tr
+                  key={index}
+                  className="border-b border-tableLightBorder hover:cursor-pointer hover:bg-gray-50"
+                  onClick={() => {
+                    showDriverDetails(data);
+                  }}
+                >
+                  <td className="px-2 pl-5 py-3 text-[14px]">{index + 1}</td>
+                  <td className="px-2 py-3 text-[14px]">{data.driverName}</td>
+                  <td className="px-2 py-3 text-[14px]">{data.phoneNumber}</td>
+                  <td className="px-2 py-3 text-[14px]">
+                    {data.experience}
+                  </td>
+                  <td className="px-2 py-3 text-[14px]">
+                    <div className="flex flex-row gap-2">
+                      <div
+                        onClick={(e) => e.stopPropagation()}
+                        className="icon border border-menuActiveColor rounded-sm p-1 cursor-pointer transition-all duration-200 hover:bg-primary hover:border-primary hover:text-white"
+                      >
+                        <Link to={`/drivers/edit/${data.id}`}>
+                          <MdModeEdit />
+                        </Link>
+                      </div>
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          console.log("Delete driver with ID:", data.id);
+                          showDeleteDriver(data.id);
+                        }}
+                        className="icon border border-menuActiveColor rounded-sm p-1 cursor-pointer transition-all duration-200 hover:bg-red-600 hover:border-red-600 hover:text-white"
+                      >
+                        <AiFillDelete />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/* Pagination */}
+      {/* {!getBusesLoading && (
+        <div className="table-pagination mt-4 flex flex-row items-center justify-end gap-4">
+          <div>
+            <label htmlFor="rowsPerPage" className="text-textLight text-[14px]">
+              Rows per page:
+            </label>
+            <select
+              id="rowsPerPage"
+              className="rounded-sm px-1 py-1 text-[14px] ml-2 border border-tableDarkBorder"
+            >
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+          </div>
+          <div className="ml-2 text-textLight text-[14px]">1-10 of 100</div>
+          <div className="flex flex-row gap-1 text-[14px]">
+            <button className="rounded-md px-2 py-2 cursor-pointer hover:bg-primary hover:text-white transition-all duration-100">
+              <GrPrevious />
+            </button>
+            <button className="rounded-md px-2 py-2 cursor-pointer hover:bg-primary hover:text-white transition-all duration-1    00">
+              <GrPrevious style={{ transform: "rotate(180deg)" }} />
+            </button>
+          </div>
+        </div>
+      )}   */}
+
+      {/* View Driver Details Dialog */}
+      {viewDriverDetail && !deleteDriver && (
+        <ViewDriverDetails data={viewDriverDetailData} onClose={hideDriverDetails} />
+      )}
+
+      {/* Delete Driver Dialog */}
+      {deleteDriver && !viewDriverDetail && (
+        <DeleteDriver
+          deleteDriverId={deleteDriverId}
+          deleteLoading={deleteDriverLoading}
+          setDeleteDriverLoading={setDeleteDriverLoading}
+          onClose={hideDeleteDriver}
+        />
+      )}
+    </div>
+  );
+};
+
+export default DriversTable;
