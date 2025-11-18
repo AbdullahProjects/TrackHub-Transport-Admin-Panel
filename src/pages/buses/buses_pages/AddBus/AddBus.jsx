@@ -3,15 +3,29 @@ import BackButton from "../../../../components/BackButton";
 import { Heading } from "../../../../components/HeadingAndSubheading";
 import Images from "../../../../utils/common/Images";
 import AppButton from "../../../../components/AppButton";
+import { addBus } from "../../firebase/BusesFirebase";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { clearBusesData } from "../../../../redux_store/slices/buses/BusesSlice";
 
 const AddBus = () => {
+  const dispatch = useDispatch();
+  // Getting state data from redux store
+  const adminData = useSelector((state) => state.auth.adminData);
+
+  const navigate = useNavigate();
+  const [addingBusLoading, setAddingBusLoading] = useState(false);
   const [formData, setFormData] = useState({
-    busNumber: "",
+    busName: "",
     licensePlate: "",
     capacity: "",
     model: "",
     year: "",
     status: "active",
+    organizationId: adminData.organizationId,
+    adminId: adminData.id,
   });
 
   const handleChange = (e) => {
@@ -22,9 +36,20 @@ const AddBus = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    try {
+      setAddingBusLoading(true);
+      await addBus(formData);
+      toast.success("Bus added successfully!");
+      dispatch(clearBusesData());
+      // Navigate back to previous page after adding bus
+      navigate(-1);
+    } catch (error) {
+      toast.error("Error adding bus: " + error.message);
+    } finally {
+      setAddingBusLoading(false);
+    }
   };
 
   return (
@@ -43,23 +68,23 @@ const AddBus = () => {
         </div>
         <form onSubmit={handleSubmit} className="w-full space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Bus Number */}
+            {/* Bus Name */}
             <div>
               <label
-                htmlFor="busNumber"
+                htmlFor="busName"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Bus Number *
+                Bus Name *
               </label>
               <input
                 type="text"
-                id="busNumber"
-                name="busNumber"
-                value={formData.busNumber}
+                id="busName"
+                name="busName"
+                value={formData.busName}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                placeholder="e.g. LHR-1234"
+                placeholder="e.g. Route no 01 Defense Morr"
               />
             </div>
 
@@ -78,7 +103,7 @@ const AddBus = () => {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                placeholder="Enter license plate"
+                placeholder="e.g. ABC-1234"
               />
             </div>
 
@@ -165,7 +190,12 @@ const AddBus = () => {
           </div>
 
           <div className="pt-4">
-            <AppButton isSubmitButton={true} text="Add Bus" />
+            <AppButton
+              isSubmitButton={true}
+              text="Add Bus"
+              isLoading={addingBusLoading}
+              loadingText="Adding..."
+            />
           </div>
         </form>
       </div>

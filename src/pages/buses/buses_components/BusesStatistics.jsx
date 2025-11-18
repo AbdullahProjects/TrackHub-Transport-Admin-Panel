@@ -1,27 +1,29 @@
 import React, {useState} from "react";
 import Images from "../../../utils/common/Images";
+import { useSelector } from "react-redux";
 
 const BusesStatistics = () => {
   const [statsLoading, setStatsLoading] = useState(false);
+  const busesData = useSelector((state) => state.buses.busesData);
 
   return (
     <div className="bus-stats grid grid-rows-3 grid-cols-1 md:grid-rows-2 md:grid-cols-2 lg:grid-rows-1 lg:grid-cols-3 gap-4">
       <StatsContainer
         text={"Total Buses"}
-        value={18}
+        value={busesData.length}
         icon={Images.busIcon}
         loading={statsLoading}
       />
       <StatsContainer
         text={"Active Buses"}
-        value={15}
+        value={busesData.filter((bus) => bus.status === "active").length}
         icon={Images.activeBusIcon}
         loading={statsLoading}
         bgColor="#32B35950"
       />
       <StatsContainer
-        text={"Maintenance Required"}
-        value={2}
+        text={"Under Maintenance"}
+        value={busesData.filter((bus) => bus.status === "maintenance").length}
         icon={Images.maintenanceIcon}
         loading={statsLoading}
         bgColor="#ED1F3E50"

@@ -1,7 +1,7 @@
 import React from "react";
 import { IoMdClose } from "react-icons/io";
 
-const ViewBusDetails = ({ onClose }) => {
+const ViewBusDetails = ({ data, onClose }) => {
   return (
     <div className="view-bus-details">
       <div onClick={onClose} className="fixed inset-0 bg-black/20"></div>
@@ -13,16 +13,16 @@ const ViewBusDetails = ({ onClose }) => {
         </div>
         <div className="space-y-2 mt-5">
           <p>
-            <strong>Bus Number:</strong> 1234
+            <strong>Bus Name:</strong> {data.busName}
           </p>
           <p>
-            <strong>License Plate:</strong> ABC-123
+            <strong>License Plate:</strong> {data.licensePlate}
           </p>
           <p>
-            <strong>Capacity:</strong> 50
+            <strong>Capacity:</strong> {data.capacity}
           </p>
           <p>
-            <strong>Status:</strong> Active
+            <strong>Status:</strong> {data.status}
           </p>
         </div>
       </div>

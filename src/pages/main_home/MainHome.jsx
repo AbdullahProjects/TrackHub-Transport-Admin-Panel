@@ -26,13 +26,7 @@ const MainHome = () => {
   const location = useLocation();
   const isLoginRoute = location.pathname === "/login";
 
-  if (isLoginRoute && (adminData === null || organizationData === null)) {
-    if (adminData === null) {
-      alert("Please login to continue.");
-    } else if (organizationData === null) {
-      alert("Organization data not found. Please contact support.");
-    }
-
+  if (isLoginRoute) {
     return (
       <>
         <Login />

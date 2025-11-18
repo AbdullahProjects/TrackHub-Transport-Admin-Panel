@@ -6,6 +6,7 @@ const AppButton = ({
   onTap,
   fullWidth = false,
   isLoading = false,
+  loadingText = "Loading...",
 }) => {
   return (
     <button
@@ -16,7 +17,7 @@ const AppButton = ({
         fullWidth ? "w-full" : ""
       }`}
     >
-      {isLoading ? "Loading..." : text ? text : "Button"}
+      {isLoading ? loadingText : text ? text : "Button"}
     </button>
   );
 };
