@@ -15,7 +15,7 @@ const Drivers = () => {
   return (
     <div className="drivers mb-25 lg:mb-14">
       <div>
-        <div className="mt-5 flex flex-row justify-between">
+        <div className="mt-2 flex flex-row justify-between">
           <Heading text={"Driver Management"} />
           <AppButton
             text={"Add Driver"}

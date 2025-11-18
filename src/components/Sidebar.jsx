@@ -77,7 +77,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 className={`flex flex-col items-center gap-3 px-2 py-6 transition-all duration-200 ${
                   isActive(item.path)
                     ? "bg-menuActiveColor text-white shadow-lg"
-                    : "hover:bg-menuActiveColor hover:text-white"
+                    : "hover:bg-menuActiveColor/30 hover:text-white"
                 }`}
               >
                 <img

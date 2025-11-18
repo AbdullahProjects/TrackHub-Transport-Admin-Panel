@@ -4,7 +4,7 @@ import Dashboard from "../../pages/dashboard/Dashboard";
 import Buses from "../../pages/buses/buses_pages/AllBuses/Buses";
 import Organization from "../../pages/organization/organization_pages/Organization";
 import Report from "../../pages/report/Report";
-import Notification from "../../pages/notification/Notification";
+import Notification from "../../pages/notification/notification_pages/Notification";
 import AddBus from "../../pages/buses/buses_pages/AddBus/AddBus";
 import Login from "../../pages/login/login_pages/Login";
 import EditBus from "../../pages/buses/buses_pages/EditBus/EditBus";
