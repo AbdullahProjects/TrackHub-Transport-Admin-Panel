@@ -11,6 +11,7 @@ import { updateDriverDataInFirestore } from "../../firebase/DriversFirebase";
 import { useDispatch } from "react-redux";
 import { clearDriversData } from "../../../../redux_store/slices/drivers/DriversSlide";
 import { useNavigate } from "react-router";
+import RouteNames from "../../../../utils/routing/RouteNames";
 
 const EditDriver = () => {
   const { driverId } = useParams();
@@ -60,7 +61,7 @@ const EditDriver = () => {
       toast.success("Driver data updated successfully!");
       dispatch(clearDriversData());
       // Navigate back to previous page after adding bus
-      navigate(-1);
+      navigate(RouteNames.drivers, { replace: true });
     } catch (error) {
       console.error("Error updating bus data: ", error);
       toast.error("Error updating bus data: " + error.message);

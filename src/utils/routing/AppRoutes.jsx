@@ -12,12 +12,13 @@ import AddDriver from "../../pages/drivers/drivers_pages/AddDriver/AddDriver";
 import EditDriver from "../../pages/drivers/drivers_pages/EditDriver/EditDriver";
 import Organization from "../../pages/organization/organization_pages/Organization";
 import Login from "../../pages/login/login_pages/Login";
+import Report from "../../pages/report/Report";
+import Notification from "../../pages/notification/notification_pages/Notification";
 import NotFound from "../../pages/not_found/NotFound";
 
 const AppRoutes = () => {
   return (
     <Routes>
-
       {/* PUBLIC ROUTES */}
       <Route element={<AuthLayout />}>
         <Route path={RouteNames.login} element={<Login />} />
@@ -45,10 +46,11 @@ const AppRoutes = () => {
         <Route path={RouteNames.drivers} element={<Drivers />} />
         <Route path={RouteNames.addDriver} element={<AddDriver />} />
         <Route path={RouteNames.editDriver} element={<EditDriver />} />
+        <Route path={RouteNames.report} element={<Report />} />
+        <Route path={RouteNames.notification} element={<Notification />} />
         <Route path={RouteNames.organization} element={<Organization />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-
     </Routes>
   );
 };

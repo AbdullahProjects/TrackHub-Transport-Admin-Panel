@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { clearBusesData } from "../../../../redux_store/slices/buses/BusesSlice";
+import RouteNames from "../../../../utils/routing/RouteNames";
 
 const AddBus = () => {
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ const AddBus = () => {
       toast.success("Bus added successfully!");
       dispatch(clearBusesData());
       // Navigate back to previous page after adding bus
-      navigate(-1);
+      navigate(RouteNames.buses, { replace: true });
     } catch (error) {
       toast.error("Error adding bus: " + error.message);
     } finally {

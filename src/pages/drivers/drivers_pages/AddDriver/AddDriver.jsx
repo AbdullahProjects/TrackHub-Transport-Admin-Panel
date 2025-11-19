@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { clearDriversData } from "../../../../redux_store/slices/drivers/DriversSlide";
+import RouteNames from "../../../../utils/routing/RouteNames";
 
 const AddDriver = () => {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const AddDriver = () => {
       toast.success("Driver added successfully!");
       dispatch(clearDriversData());
       // Navigate back to previous page after adding bus
-      navigate(-1);
+      navigate(RouteNames.drivers, { replace: true });
     } catch (error) {
       toast.error("Error adding driver: " + error.message);
     } finally {

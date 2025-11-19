@@ -11,6 +11,7 @@ import { updateBusDataInFirestore } from "../../firebase/BusesFirebase";
 import { useDispatch } from "react-redux";
 import { clearBusesData } from "../../../../redux_store/slices/buses/BusesSlice";
 import { useNavigate } from "react-router";
+import RouteNames from "../../../../utils/routing/RouteNames";
 
 const EditBus = () => {
   const { busId } = useParams();
@@ -63,7 +64,7 @@ const EditBus = () => {
       toast.success("Bus data updated successfully!");
       dispatch(clearBusesData());
       // Navigate back to previous page after adding bus
-      navigate(-1);
+      navigate(RouteNames.buses, { replace: true });
     } catch (error) {
       console.error("Error updating bus data: ", error);
       toast.error("Error updating bus data: " + error.message);
