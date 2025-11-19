@@ -15,10 +15,10 @@ const NotFound = () => {
       <Lottie
         animationData={Images.error404Animation}
         loop={true}
-        className="w-64 h-auto mb-4"
+        className="w-50 md:w-60 lg:w-75 h-auto mb-4"
       />
-      <h2 className="text-2xl font-semibold mb-2">Page Not Found</h2>
-      <p className="text-gray-600 mb-6">
+      <h2 className="text-xl md:text-2xl font-semibold mb-2">Page Not Found</h2>
+      <p className="text-gray-600 mb-6 text-[14px]">
         The page you're looking for doesn't exist or has been moved.
       </p>
 
