@@ -11,11 +11,9 @@ const adminSlice = createSlice({
   reducers: {
     setAdminData: (state, action) => {
       state.adminData = { ...action.payload };
-      state.loading = false;
     },
     clearAdminData: (state) => {
       state.adminData = null;
-      state.loading = false;
     },
     setLoading: (state, action) => {
       state.loading = action.payload;

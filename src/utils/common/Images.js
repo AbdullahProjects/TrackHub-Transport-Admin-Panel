@@ -20,6 +20,8 @@ import DummyBusImage from "../../assets/images/bus_image.png";
 import DummyUniImage from "../../assets/images/uni_logo.png";
 // Import Illustrations
 import LoginPageIllustration from "../../assets/images/login_page_illustration.png";
+// Import Lottie Animation
+import Error404Animation from "../../assets/animations/404_error_animation.json";
 
 class Images {
   // Logo
@@ -49,6 +51,9 @@ class Images {
 
   // Illustrations
   static loginPageIllustration = LoginPageIllustration;
+
+  // Animations
+  static error404Animation = Error404Animation;
 }
 
 export default Images;

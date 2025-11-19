@@ -1,7 +1,7 @@
 class RouteNames {
     static login = '/login';
-    static mainHome = '/main';
-    static dashboard = '/';
+    static mainHome = '/';
+    static dashboard = '/dashboard';
     static drivers = '/drivers';
     static buses = '/buses';
     static organization = '/organization';

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Login from "./pages/login/login_pages/Login";
 import Images from "./utils/common/Images";
 import { MoonLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,8 +14,8 @@ import {
 import { getUserDetails } from "./pages/login/firebase/LoginFirebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase";
-import MainHome from "./pages/main_home/MainHome";
 import { getOrganizationDetails } from "./pages/organization/firebase/OrganizationFirebase";
+import AppRoutes from "./utils/routing/AppRoutes";
 
 const App = () => {
   const loading = useSelector((state) => state.auth.loading);
@@ -64,7 +63,7 @@ const App = () => {
     );
   }
 
-  return <MainHome />;
+  return <AppRoutes />;
 };
 
 export default App;
