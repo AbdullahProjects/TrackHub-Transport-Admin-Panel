@@ -42,7 +42,7 @@ const Login = () => {
     
       console.log("User details fetched:", userDetails);
       dispatch(setAdminData(userDetails));
-      navigate(RouteNames.dashboard);
+      navigate(RouteNames.mainHome, {replace: true});
     } catch (error) {
       console.error("Login failed:", error);
       toast.error(error.message.split("Firebase: ")[1] || "Login failed. Please try again.");
