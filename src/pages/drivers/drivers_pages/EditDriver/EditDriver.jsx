@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Heading } from "../../../../components/HeadingAndSubheading";
 import BackButton from "../../../../components/BackButton";
 import Images from "../../../../utils/common/Images";
@@ -12,6 +12,11 @@ import { useDispatch } from "react-redux";
 import { clearDriversData } from "../../../../redux_store/slices/drivers/DriversSlide";
 import { useNavigate } from "react-router";
 import RouteNames from "../../../../utils/routing/RouteNames";
+import { FaCamera } from "react-icons/fa";
+import CustomDatePicker from "../../../../components/DatePicker";
+import dayjs from "dayjs";
+import { uploadFileToCloudinary } from "../../../../services/cloudinary/UploadFileToCloudinary";
+import compressImage from "../../../../utils/image_compression/ImageCompression";
 
 const EditDriver = () => {
   const { driverId } = useParams();
@@ -21,15 +26,61 @@ const EditDriver = () => {
   const [dataUpdatingLoading, setDataUpdatingLoading] = useState(false);
   const [driverData, setDriverData] = useState(null);
 
+  const [image, setImage] = useState(null);
+  const fileInputRef = useRef(null);
+  const [errors, setErrors] = useState({ name: null, phone: null });
+
+  // Validate Name
+  const validateName = (value) => {
+    const regex = /^[a-zA-Z\s'-]{2,50}$/;
+    if (!value) {
+      return "Name is required.";
+    } else if (!regex.test(value)) {
+      return "Please enter a valid name (letters only).";
+    } else {
+      return "";
+    }
+  };
+
+  // Validate Phone
+  const validatePhone = (value) => {
+    const regex = /^\d{11}$/; // exactly 11 digits
+    if (!value) {
+      return "Phone number is required.";
+    } else if (!regex.test(value)) {
+      return "Phone number must be 11 digits, only numbers allowed.";
+    } else {
+      return "";
+    }
+  };
+
+  // When user selects file
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    console.log("Selected file:", file);
+
+    const imageUrl = URL.createObjectURL(file);
+    console.log("Generated image URL:", imageUrl);
+    setImage(imageUrl);
+  };
+
+  const openFilePicker = () => {
+    fileInputRef.current.click();
+  };
+
   useEffect(() => {
     const fetchDriverDataById = async () => {
       try {
         const data = await getDriverById(driverId);
         setFormData({
           driverName: data.driverName,
+          driverEmail: data.driverEmail,
           phoneNumber: data.phoneNumber,
-          experience: data.experience,
+          registeredDate: data.registeredDate,
+          profileUrl: data.profileUrl,
         });
+        setImage(data.profileUrl);
 
         setDriverData(data);
       } catch (error) {
@@ -55,8 +106,33 @@ const EditDriver = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Validate input fields
+    const nameError = validateName(formData.driverName);
+    const phoneError = validatePhone(formData.phoneNumber);
+    setErrors({ name: nameError, phone: phoneError });
+
+    // If there are validation errors, do not proceed
+    if (nameError || phoneError) {
+      return;
+    }
+
     try {
       setDataUpdatingLoading(true);
+      // const file = fileInputRef.current;
+      if (fileInputRef.current.files.length > 0) {
+        const compressedImage = await compressImage({
+          image: fileInputRef.current.files[0],
+        });
+        const res = await uploadFileToCloudinary(compressedImage);
+        if (res.error) {
+          toast.error("Image upload failed: " + res.error);
+          console.log("Image upload error: ", res.error);
+          setDataUpdatingLoading(false);
+          return;
+        }
+        formData.profileUrl = res.url;
+      }
+
       await updateDriverDataInFirestore(driverId, formData);
       toast.success("Driver data updated successfully!");
       dispatch(clearDriversData());
@@ -103,12 +179,53 @@ const EditDriver = () => {
           </div>
         ) : (
           <>
-            <div className="flex flex-row justify-between items-center">
-              <img
-                src={Images.dummyBusImage}
-                alt="Bus Image"
-                className="w-[110px] h-auto rounded-full"
-              />
+            <div className="flex justify-start items-center my-2">
+              <div
+                className="
+                     relative w-30 h-30 rounded-full bg-gray-100 
+                     flex justify-center items-center cursor-pointer 
+                     overflow-hidden group shadow-sm"
+                onClick={openFilePicker}
+              >
+                {/* If image URL is null → show camera icon */}
+                {!image && (
+                  <FaCamera className="text-2xl text-gray-500 group-hover:text-black transition" />
+                )}
+
+                {/* If image is not null → show image */}
+                {image && (
+                  <>
+                    <img
+                      src={image}
+                      alt="uploaded"
+                      className="w-full h-full object-cover"
+                    />
+
+                    {/* Overlay on hover */}
+                    <div
+                      className="
+                           absolute inset-0 
+                           group-hover:bg-black/40 transition-all duration-200"
+                    />
+
+                    {/* Camera icon on hover */}
+                    <FaCamera
+                      className="
+                           absolute text-white text-2xl opacity-0 
+                           group-hover:opacity-100 transition-all duration-200"
+                    />
+                  </>
+                )}
+
+                {/* Hidden file input */}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                />
+              </div>
             </div>
             <form onSubmit={handleSubmit} className="w-full space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -117,7 +234,7 @@ const EditDriver = () => {
                     htmlFor="driverName"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Driver Name *
+                    Driver Name <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="text"
@@ -129,6 +246,28 @@ const EditDriver = () => {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                     placeholder="Enter driver name"
                   />
+                  {errors.name && (
+                    <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="driverEmail"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Driver Email
+                  </label>
+                  <input
+                    type="email"
+                    id="driverEmail"
+                    name="driverEmail"
+                    value={formData.driverEmail}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                    placeholder="Enter driver email"
+                  />
                 </div>
 
                 <div>
@@ -136,7 +275,7 @@ const EditDriver = () => {
                     htmlFor="phoneNumber"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Phone Number *
+                    Phone Number <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="text"
@@ -148,24 +287,33 @@ const EditDriver = () => {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                     placeholder="Enter phone number"
                   />
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                  )}
                 </div>
 
                 <div>
                   <label
-                    htmlFor="experience"
+                    htmlFor="registeredDate"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Experience *
+                    Registered Date <span className="text-red-600">*</span>
                   </label>
-                  <input
-                    type="text"
-                    id="experience"
-                    name="experience"
-                    value={formData.experience}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                    placeholder="Enter experience"
+                  <CustomDatePicker
+                    value={formData.registeredDate}
+                    onChange={(date) => {
+                      if (date && dayjs.isDayjs(date)) {
+                        setFormData({
+                          ...formData,
+                          registeredDate: date.format("DD/MM/YYYY"),
+                        });
+                      } else {
+                        setFormData({
+                          ...formData,
+                          registeredDate: null,
+                        });
+                      }
+                    }}
                   />
                 </div>
               </div>

@@ -12,6 +12,7 @@ import { BeatLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { setDriversData } from "../../../redux_store/slices/drivers/DriversSlide";
 import ViewDriverDetails from "./ViewDriverDetails";
+import { CiUser } from "react-icons/ci";
 
 const DriversTable = () => {
   const adminData = useSelector((state) => state.auth.adminData);
@@ -81,8 +82,8 @@ const DriversTable = () => {
               No Drivers Added Yet
             </h2>
             <p className="text-textLight max-w-xs mt-1 text-sm text-center">
-              You haven’t added any drivers to your organization. Start by adding
-              your first driver to begin managing your fleet.
+              You haven’t added any drivers to your organization. Start by
+              adding your first driver to begin managing your fleet.
             </p>
           </div>
         ) : (
@@ -96,10 +97,13 @@ const DriversTable = () => {
                   Driver Name
                 </th>
                 <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                  Email
+                </th>
+                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
                   Phone Number
                 </th>
                 <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
-                  Experience
+                  Registered Date
                 </th>
                 <th className="px-2 py-3 text-[14px]">Actions</th>
               </tr>
@@ -114,10 +118,30 @@ const DriversTable = () => {
                   }}
                 >
                   <td className="px-2 pl-5 py-3 text-[14px]">{index + 1}</td>
-                  <td className="px-2 py-3 text-[14px]">{data.driverName}</td>
+                  <td className="px-2 py-3 text-[14px]">
+                    <div className="flex flex-row items-center justify-start gap-2">
+                      <div className="w-9 h-9 rounded-full overflow-hidden bg-gray-100">
+                        {data.profileUrl !== null ? (
+                          <img
+                            src={data.profileUrl}
+                            alt="Driver Picture"
+                            className="object-cover w-full h-full"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <CiUser className="text-gray-900 text-xl" />
+                          </div>
+                        )}
+                      </div>
+                      <p>{data.driverName}</p>
+                    </div>
+                  </td>
+                  <td className="px-2 py-3 text-[14px]">
+                    {data.driverEmail || "N/A"}
+                  </td>
                   <td className="px-2 py-3 text-[14px]">{data.phoneNumber}</td>
                   <td className="px-2 py-3 text-[14px]">
-                    {data.experience}
+                    {data.registeredDate}
                   </td>
                   <td className="px-2 py-3 text-[14px]">
                     <div className="flex flex-row gap-2">
@@ -179,7 +203,10 @@ const DriversTable = () => {
 
       {/* View Driver Details Dialog */}
       {viewDriverDetail && !deleteDriver && (
-        <ViewDriverDetails data={viewDriverDetailData} onClose={hideDriverDetails} />
+        <ViewDriverDetails
+          data={viewDriverDetailData}
+          onClose={hideDriverDetails}
+        />
       )}
 
       {/* Delete Driver Dialog */}

@@ -16,6 +16,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase";
 import { getOrganizationDetails } from "./pages/organization/firebase/OrganizationFirebase";
 import AppRoutes from "./utils/routing/AppRoutes";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const loading = useSelector((state) => state.auth.loading);
@@ -63,7 +64,12 @@ const App = () => {
     );
   }
 
-  return <AppRoutes />;
+  return (
+    <>
+      <AppRoutes />;
+      <ToastContainer />
+    </>
+  );
 };
 
 export default App;

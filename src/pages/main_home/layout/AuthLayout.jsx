@@ -5,7 +5,6 @@ const AuthLayout = () => {
   return (
     <>
       <Outlet />
-      <ToastContainer />
     </>
   );
 };

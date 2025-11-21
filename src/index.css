@@ -18,24 +18,25 @@ body{
   display: none;  
 }
 
-input {
-  height: 40px;
-  padding: 10px 15px;
-  border: 1px solid var(--color-tableDarkBorder);
-  border-radius: 6px;
-  font-size: 14px;
-  color: var(--color-textLight);
-  font-weight: 500;
+input , .MuiPickersInputBase-root{
+  height: 40px !important;
+  padding: 10px 15px !important;
+  /* border: 1px solid var(--color-tableDarkBorder) !important; */
+  border-radius: 6px !important;
+  font-size: 14px !important;
+  color: var(--color-textLight) !important;
+  font-weight: 500 !important;
 }
 
-input::placeholder {
-  color: var(--color-tableDarkBorder);
-  font-weight: 400;
-  font-size: 14px;
+input::placeholder , .MuiPickersInputBase-root::placeholder{
+  color: var(--color-tableDarkBorder) !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
 }
 
-input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 5px var(--color-primary);
+input:focus, .MuiPickersInputBase-root.Mui-focused:focus{
+  outline: none !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 5px var(--color-primary) !important;
 }
+

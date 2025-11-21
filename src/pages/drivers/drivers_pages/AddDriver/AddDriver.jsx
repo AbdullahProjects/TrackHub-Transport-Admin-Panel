@@ -11,6 +11,9 @@ import { FaCamera } from "react-icons/fa";
 import { clearDriversData } from "../../../../redux_store/slices/drivers/DriversSlide";
 import RouteNames from "../../../../utils/routing/RouteNames";
 import { uploadFileToCloudinary } from "../../../../services/cloudinary/UploadFileToCloudinary";
+import CustomDatePicker from "../../../../components/DatePicker";
+import dayjs from "dayjs";
+import compressImage from "../../../../utils/image_compression/ImageCompression";
 
 const AddDriver = () => {
   const dispatch = useDispatch();
@@ -19,6 +22,31 @@ const AddDriver = () => {
 
   const [image, setImage] = useState(null);
   const fileInputRef = useRef(null);
+  const [errors, setErrors] = useState({ name: null, phone: null });
+
+  // Validate Name
+  const validateName = (value) => {
+    const regex = /^[a-zA-Z\s'-]{2,50}$/;
+    if (!value) {
+      return "Name is required.";
+    } else if (!regex.test(value)) {
+      return "Please enter a valid name (letters only).";
+    } else {
+      return "";
+    }
+  };
+
+  // Validate Phone
+  const validatePhone = (value) => {
+    const regex = /^\d{11}$/; // exactly 11 digits
+    if (!value) {
+      return "Phone number is required.";
+    } else if (!regex.test(value)) {
+      return "Phone number must be 11 digits, only numbers allowed.";
+    } else {
+      return "";
+    }
+  };
 
   // When user selects file
   const handleFileChange = (e) => {
@@ -38,10 +66,11 @@ const AddDriver = () => {
   const navigate = useNavigate();
   const [addingDriverLoading, setAddingDriverLoading] = useState(false);
   const [formData, setFormData] = useState({
-    driverName: "",
-    phoneNumber: "",
-    experience: "",
-    profileUrl: "",
+    driverName: null,
+    driverEmail: null,
+    phoneNumber: null,
+    registeredDate: null,
+    profileUrl: null,
     organizationId: adminData.organizationId,
     adminId: adminData.id,
   });
@@ -56,12 +85,21 @@ const AddDriver = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Validate input fields
+    const nameError = validateName(formData.driverName);
+    const phoneError = validatePhone(formData.phoneNumber);
+    setErrors({ name: nameError, phone: phoneError });
+
+    // If there are validation errors, do not proceed
+    if (nameError || phoneError) {
+      return;
+    }
     try {
       setAddingDriverLoading(true);
-
       const file = fileInputRef.current.files[0];
       if (image !== null) {
-        const res = await uploadFileToCloudinary(file);
+        const compressedImage = await compressImage({ image: file });
+        const res = await uploadFileToCloudinary(compressedImage);
         if (res.error) {
           toast.error("Image upload failed: " + res.error);
           setAddingDriverLoading(false);
@@ -69,6 +107,8 @@ const AddDriver = () => {
         }
         formData.profileUrl = res.url;
       }
+
+      console.log("Final Driver Data to be added:", formData);
 
       await addDriver(formData);
       toast.success("Driver added successfully!");
@@ -138,7 +178,7 @@ const AddDriver = () => {
             />
           </div>
         </div>
-        <form onSubmit={handleSubmit} className="w-full space-y-6">
+        <form onSubmit={handleSubmit} className="w-full space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Driver Name */}
             <div>
@@ -146,7 +186,7 @@ const AddDriver = () => {
                 htmlFor="driverName"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Driver Name *
+                Driver Name <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
@@ -158,6 +198,28 @@ const AddDriver = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 placeholder="e.g. Route no 01 Defense Morr"
               />
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+              )}
+            </div>
+
+            {/* Driver Email */}
+            <div>
+              <label
+                htmlFor="driverEmail"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="driverEmail"
+                name="driverEmail"
+                value={formData.driverEmail}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                placeholder="e.g. driver@gmail.com"
+              />
             </div>
 
             {/* Driver Phone Number */}
@@ -166,7 +228,7 @@ const AddDriver = () => {
                 htmlFor="phoneNumber"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Phone Number *
+                Phone Number <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
@@ -178,30 +240,39 @@ const AddDriver = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 placeholder="e.g. 03xxx-xxxxxxx"
               />
+              {errors.phone && (
+                <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+              )}
             </div>
 
-            {/* Driver Experience */}
+            {/* Driver Registered Date */}
             <div>
               <label
-                htmlFor="experience"
+                htmlFor="registeredDate"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Experience *
+                Registered Date <span className="text-red-600">*</span>
               </label>
-              <input
-                type="text"
-                id="experience"
-                name="experience"
-                value={formData.experience}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                placeholder="Enter driver experience"
+              <CustomDatePicker
+                value={formData.registeredDate}
+                onChange={(date) => {
+                  if (date && dayjs.isDayjs(date)) {
+                    setFormData({
+                      ...formData,
+                      registeredDate: date.format("DD/MM/YYYY"),
+                    });
+                  } else {
+                    setFormData({
+                      ...formData,
+                      registeredDate: null,
+                    });
+                  }
+                }}
               />
             </div>
           </div>
 
-          <div className="pt-4">
+          <div className="pt-2">
             <AppButton
               isSubmitButton={true}
               text="Add Driver"
