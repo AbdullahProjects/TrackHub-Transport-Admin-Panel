@@ -39,7 +39,7 @@ const ViewDriverDetails = ({ data, onClose }) => {
           </div>
 
           {/* Details Section */}
-          <div className="space-y-4 text-gray-700">
+          <div className="space-y-2 text-gray-700">
             {/* Name */}
             <div className="flex items-center gap-4 bg-gray-50 p-3 rounded-md">
               <FaUser className="text-primary text-md" />

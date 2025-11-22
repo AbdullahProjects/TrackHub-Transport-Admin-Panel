@@ -303,7 +303,7 @@ const AddDriver = () => {
 
           {/* Driver Login Credentials */}
           <div className="pt-4">
-            <h1 className="text-[18px] font-bold">Driver Login Credentials</h1>
+            <h1 className="text-[20px] font-bold">Driver Login Credentials</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
               {/* UserName */}
               <div>
@@ -311,7 +311,7 @@ const AddDriver = () => {
                   htmlFor="username"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  UserName{" "}
+                  Username{" "}
                   <span className="text-textLight text-[13px]">
                     (Automatically Generated)
                   </span>

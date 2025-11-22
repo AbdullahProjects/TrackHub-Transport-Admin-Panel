@@ -352,7 +352,7 @@ const EditDriver = () => {
 
               {/* Driver Login Credentials */}
               <div className="pt-4">
-                <h1 className="text-[18px] font-bold">
+                <h1 className="text-[20px] font-bold">
                   Driver Login Credentials
                 </h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
@@ -426,7 +426,7 @@ const EditDriver = () => {
                 </div>
               </div>
 
-              <div className="pt-4">
+              <div className="pt-2">
                 <AppButton
                   isSubmitButton={true}
                   text="Update Driver"
