@@ -62,9 +62,30 @@ const checkUsernameAndPasswordExists = async (username, password) => {
   }
 };
 
+const checkUsernameAndPasswordExistsExceptCurrentUser = async (
+  userid,
+  username,
+  password
+) => {
+  try {
+    const q = query(
+      collection(db, FirebaseCollections.usersCollection),
+      where("username", "==", username),
+      where("password", "==", password),
+      where("id", "!=", userid)
+    );
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  } catch (error) {
+    console.error("Error checking username and password:", error);
+    return null;
+  }
+};
+
 export {
   validateName,
   validatePhone,
   validatePassword,
   checkUsernameAndPasswordExists,
+  checkUsernameAndPasswordExistsExceptCurrentUser,
 };

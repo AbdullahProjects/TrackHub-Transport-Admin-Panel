@@ -17,6 +17,15 @@ import CustomDatePicker from "../../../../components/DatePicker";
 import dayjs from "dayjs";
 import { uploadFileToCloudinary } from "../../../../services/cloudinary/UploadFileToCloudinary";
 import compressImage from "../../../../utils/image_compression/ImageCompression";
+import { GoEye } from "react-icons/go";
+import { GoEyeClosed } from "react-icons/go";
+import {
+  checkUsernameAndPasswordExistsExceptCurrentUser,
+  validateName,
+  validatePassword,
+  validatePhone,
+} from "../../../../utils/form_validations/FormValidations";
+import generatePassword from "../../../../utils/password_generator/PasswordGenerator";
 
 const EditDriver = () => {
   const { driverId } = useParams();
@@ -28,30 +37,16 @@ const EditDriver = () => {
 
   const [image, setImage] = useState(null);
   const fileInputRef = useRef(null);
-  const [errors, setErrors] = useState({ name: null, phone: null });
+  const [errors, setErrors] = useState({
+    name: null,
+    phone: null,
+    password: null,
+  });
+  const [showPassword, setShowPassword] = useState(false);
 
-  // Validate Name
-  const validateName = (value) => {
-    const regex = /^[a-zA-Z\s'-]{2,50}$/;
-    if (!value) {
-      return "Name is required.";
-    } else if (!regex.test(value)) {
-      return "Please enter a valid name (letters only).";
-    } else {
-      return "";
-    }
-  };
-
-  // Validate Phone
-  const validatePhone = (value) => {
-    const regex = /^\d{11}$/; // exactly 11 digits
-    if (!value) {
-      return "Phone number is required.";
-    } else if (!regex.test(value)) {
-      return "Phone number must be 11 digits, only numbers allowed.";
-    } else {
-      return "";
-    }
+  const handleUsername = (driverNameChange) => {
+    const namePart = driverNameChange;
+    return `THDR-${namePart}`;
   };
 
   // When user selects file
@@ -74,11 +69,14 @@ const EditDriver = () => {
       try {
         const data = await getDriverById(driverId);
         setFormData({
+          id: data.id,
           driverName: data.driverName,
           driverEmail: data.driverEmail,
           phoneNumber: data.phoneNumber,
           registeredDate: data.registeredDate,
           profileUrl: data.profileUrl,
+          username: data.username,
+          password: data.password,
         });
         setImage(data.profileUrl);
 
@@ -109,16 +107,38 @@ const EditDriver = () => {
     // Validate input fields
     const nameError = validateName(formData.driverName);
     const phoneError = validatePhone(formData.phoneNumber);
-    setErrors({ name: nameError, phone: phoneError });
+    const passwordError = validatePassword(formData.password);
+    setErrors({ name: nameError, phone: phoneError, password: passwordError });
 
     // If there are validation errors, do not proceed
-    if (nameError || phoneError) {
+    if (nameError || phoneError || passwordError) {
       return;
     }
 
     try {
       setDataUpdatingLoading(true);
-      // const file = fileInputRef.current;
+
+      // Check username and password uniqueness except current user
+      const exists = await checkUsernameAndPasswordExistsExceptCurrentUser(
+        formData.id,
+        formData.username,
+        formData.password
+      );
+
+      if (exists === null) {
+        toast.error("Error checking username and password uniqueness.");
+        setDataUpdatingLoading(false);
+        return;
+      }
+
+      if (exists) {
+        toast.error(
+          "The combination of username and password already exists. Please choose different credentials."
+        );
+        setDataUpdatingLoading(false);
+        return;
+      }
+
       if (fileInputRef.current.files.length > 0) {
         const compressedImage = await compressImage({
           image: fileInputRef.current.files[0],
@@ -179,7 +199,7 @@ const EditDriver = () => {
           </div>
         ) : (
           <>
-            <div className="flex justify-start items-center my-2">
+            <div className="flex justify-start items-center my-1">
               <div
                 className="
                      relative w-30 h-30 rounded-full bg-gray-100 
@@ -241,7 +261,14 @@ const EditDriver = () => {
                     id="driverName"
                     name="driverName"
                     value={formData.driverName}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      handleChange(e);
+                      const generatedUsername = handleUsername(e.target.value);
+                      setFormData((prevData) => ({
+                        ...prevData,
+                        username: generatedUsername,
+                      }));
+                    }}
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                     placeholder="Enter driver name"
@@ -256,7 +283,10 @@ const EditDriver = () => {
                     htmlFor="driverEmail"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Driver Email
+                    Email{" "}
+                    <span className="text-textLight text-[13px]">
+                      (Optional)
+                    </span>
                   </label>
                   <input
                     type="email"
@@ -264,7 +294,6 @@ const EditDriver = () => {
                     name="driverEmail"
                     value={formData.driverEmail}
                     onChange={handleChange}
-                    required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                     placeholder="Enter driver email"
                   />
@@ -276,6 +305,9 @@ const EditDriver = () => {
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
                     Phone Number <span className="text-red-600">*</span>
+                    <span className="text-textLight text-[13px]">
+                      (Without dash)
+                    </span>
                   </label>
                   <input
                     type="text"
@@ -315,6 +347,82 @@ const EditDriver = () => {
                       }
                     }}
                   />
+                </div>
+              </div>
+
+              {/* Driver Login Credentials */}
+              <div className="pt-4">
+                <h1 className="text-[18px] font-bold">
+                  Driver Login Credentials
+                </h1>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+                  {/* UserName */}
+                  <div>
+                    <label
+                      htmlFor="username"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      UserName{" "}
+                      <span className="text-textLight text-[13px]">
+                        (Automatically Generated)
+                      </span>
+                    </label>
+                    <input
+                      type="text"
+                      id="username"
+                      name="username"
+                      value={formData.username}
+                      onChange={handleChange}
+                      disabled
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                      placeholder="Automatically generated username"
+                    />
+                  </div>
+
+                  {/* Password */}
+                  <div className="relative">
+                    <div className="flex flex-row justify-between items-center">
+                      <label
+                        htmlFor="password"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        Password <span className="text-red-600">*</span>
+                      </label>
+                      <p
+                        onClick={() =>
+                          setFormData({
+                            ...formData,
+                            password: generatePassword(),
+                          })
+                        }
+                        className="text-[13px] font-medium text-primary hover:cursor-pointer hover:underline"
+                      >
+                        Generate Strong Password
+                      </p>
+                    </div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                      placeholder="Create strong password"
+                    />
+                    <span
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute top-[45px] right-0 text-[15px] px-3 hover:cursor-pointer"
+                    >
+                      {!showPassword ? <GoEyeClosed /> : <GoEye />}
+                    </span>
+                    {errors.password && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.password}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
 
