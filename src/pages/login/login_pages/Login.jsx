@@ -3,7 +3,7 @@ import { Heading } from "../../../components/HeadingAndSubheading";
 import AppButton from "../../../components/AppButton";
 import { useState } from "react";
 import { GoEye } from "react-icons/go";
-import { LuEyeClosed } from "react-icons/lu";
+import { GoEyeClosed } from "react-icons/go";
 import { loginUser, getUserDetails } from "../firebase/LoginFirebase";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -101,7 +101,7 @@ const Login = () => {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute top-[45px] right-0 text-[15px] px-3 hover:cursor-pointer"
             >
-              {!showPassword ? <LuEyeClosed /> : <GoEye />}
+              {!showPassword ? <GoEyeClosed /> : <GoEye />}
             </span>
           </div>
 

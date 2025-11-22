@@ -13,6 +13,8 @@ import { useDispatch } from "react-redux";
 import { setDriversData } from "../../../redux_store/slices/drivers/DriversSlide";
 import ViewDriverDetails from "./ViewDriverDetails";
 import { CiUser } from "react-icons/ci";
+import { GoEye } from "react-icons/go";
+import { GoEyeClosed } from "react-icons/go";
 
 const DriversTable = () => {
   const adminData = useSelector((state) => state.auth.adminData);
@@ -97,6 +99,9 @@ const DriversTable = () => {
                   Driver Name
                 </th>
                 <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                  Login Credentials
+                </th>
+                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
                   Email
                 </th>
                 <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
@@ -135,6 +140,9 @@ const DriversTable = () => {
                       </div>
                       <p>{data.driverName}</p>
                     </div>
+                  </td>
+                  <td className="px-2 py-3 text-[14px]">
+                    <LoginCredentialsData data={data} />
                   </td>
                   <td className="px-2 py-3 text-[14px]">
                     {data.driverEmail || "N/A"}
@@ -218,6 +226,34 @@ const DriversTable = () => {
           onClose={hideDeleteDriver}
         />
       )}
+    </div>
+  );
+};
+
+const LoginCredentialsData = (props) => {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const handlePasswordVisibilityToggle = (e) => {
+    e.stopPropagation();
+    setPasswordVisible(!passwordVisible);
+  };
+
+  return (
+    <div className="flex flex-col items-start justify-start">
+      <p className="text-[14px]">{props.data.username}</p>
+      <div className="flex flex-row items-center gap-2">
+        <p className="text-[14px] font-medium">
+          {passwordVisible ? props.data.password : "******"}
+        </p>
+        {!passwordVisible ? (
+          <GoEyeClosed onClick={handlePasswordVisibilityToggle} />
+        ) : (
+          <GoEye
+            onClick={handlePasswordVisibilityToggle}
+            className="text-primary"
+          />
+        )}
+      </div>
     </div>
   );
 };
