@@ -59,14 +59,7 @@ const AddBus = () => {
         <BackButton />
         <Heading text={"Add Bus Details"} />
       </div>
-      <div className="mt-6 bg-white px-8 py-12 rounded-md shadow-md shadow-black/5 flex flex-col gap-6">
-        <div className="flex flex-row justify-between items-center">
-          <img
-            src={Images.dummyBusImage}
-            alt="Bus Image"
-            className="w-[110px] h-auto rounded-full"
-          />
-        </div>
+      <div className="mt-6 bg-white px-8 py-10 rounded-md shadow-md shadow-black/5 flex flex-col gap-6">
         <form onSubmit={handleSubmit} className="w-full space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Bus Name */}
@@ -75,7 +68,7 @@ const AddBus = () => {
                 htmlFor="busName"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Bus Name *
+                Bus or Route Name <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
@@ -94,7 +87,7 @@ const AddBus = () => {
                 htmlFor="licensePlate"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                License Plate *
+                License Plate
               </label>
               <input
                 type="text"
@@ -102,7 +95,6 @@ const AddBus = () => {
                 name="licensePlate"
                 value={formData.licensePlate}
                 onChange={handleChange}
-                required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 placeholder="e.g. ABC-1234"
               />
@@ -113,7 +105,7 @@ const AddBus = () => {
                 htmlFor="capacity"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Capacity *
+                Capacity <span className="text-red-600">*</span>
               </label>
               <input
                 type="number"
@@ -133,7 +125,7 @@ const AddBus = () => {
                 htmlFor="model"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Model *
+                Model
               </label>
               <input
                 type="text"
@@ -141,7 +133,6 @@ const AddBus = () => {
                 name="model"
                 value={formData.model}
                 onChange={handleChange}
-                required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 placeholder="Enter bus model"
               />
@@ -152,7 +143,7 @@ const AddBus = () => {
                 htmlFor="year"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Year *
+                Year
               </label>
               <input
                 type="number"
@@ -160,7 +151,6 @@ const AddBus = () => {
                 name="year"
                 value={formData.year}
                 onChange={handleChange}
-                required
                 min="1900"
                 max={new Date().getFullYear() + 1}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
@@ -173,7 +163,7 @@ const AddBus = () => {
                 htmlFor="status"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Status *
+                Status <span className="text-red-600">*</span>
               </label>
               <select
                 id="status"

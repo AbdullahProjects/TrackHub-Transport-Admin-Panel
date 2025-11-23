@@ -64,11 +64,10 @@ const getAllBuses = async (orgId) => {
 
 // Update bus in Firebase Firestore
 const updateBusDataInFirestore = async (busId, updatedData) => {
-  try{
+  try {
     const busRef = doc(db, FirebaseCollections.busesCollection, busId);
     await setDoc(busRef, updatedData, { merge: true });
-  }
-  catch (e) {
+  } catch (e) {
     console.log("Error while updating bus in firebase firestore: " + e);
     throw e;
   }
@@ -84,5 +83,23 @@ const deleteBusFromFirestore = async (busId) => {
   }
 };
 
+// Assign Driver to Bus in Firebase Firestore
+const assignDriverToBus = async (busId, driverId) => {
+  try {
+    const busDocRef = doc(db, FirebaseCollections.busesCollection, busId);
+    await setDoc(busDocRef, { assignedDriverId: driverId }, { merge: true });
+  } catch (e) {
+    console.log("Error while assigning driver to bus" + e);
+    throw e;
+  }
+};
+
 // Export functions
-export { addBus, getBusById, getAllBuses, updateBusDataInFirestore, deleteBusFromFirestore };
+export {
+  addBus,
+  getBusById,
+  getAllBuses,
+  updateBusDataInFirestore,
+  deleteBusFromFirestore,
+  assignDriverToBus,
+};

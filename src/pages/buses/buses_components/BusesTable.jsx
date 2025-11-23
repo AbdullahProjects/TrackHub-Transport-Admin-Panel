@@ -11,20 +11,29 @@ import { getAllBuses } from "../firebase/BusesFirebase";
 import { toast } from "react-toastify";
 import { BeatLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
+import { CiUser } from "react-icons/ci";
 import { setBusesData } from "../../../redux_store/slices/buses/BusesSlice";
+import { getDriverById } from "../../drivers/firebase/DriversFirebase";
+import DriversDialog from "./DriversDialog";
 
 const BusesTable = () => {
   const adminData = useSelector((state) => state.auth.adminData);
   const busesData = useSelector((state) => state.buses.busesData);
   const dispatch = useDispatch();
 
-  // const [busesData, setBusesData] = useState([]);
   const [getBusesLoading, setGetBusesLoading] = useState(false);
   const [viewBusDetail, setViewBusDetail] = useState(false);
   const [viewBusDetailData, setViewBusDetailData] = useState(null);
   const [deleteBusId, setDeleteBusId] = useState(null);
   const [deleteBusLoading, setDeleteBusLoading] = useState(false);
   const [deleteBus, setDeleteBus] = useState(false);
+  const [busId, setBusId] = useState(null);
+  const [showDriversDialog, setShowDriversDialog] = useState(false);
+
+  const handleBusClick = (id) => {
+    setBusId(id);
+    setShowDriversDialog(true);
+  };
 
   const showBusDetails = (data) => {
     setDeleteBus(false);
@@ -46,21 +55,21 @@ const BusesTable = () => {
     setDeleteBus(false);
   };
 
-  useEffect(() => {
-    const fetchBuses = async () => {
-      try {
-        if (busesData.length > 0) return;
-        setGetBusesLoading(true);
-        const buses = await getAllBuses(adminData.organizationId);
-        dispatch(setBusesData(buses));
-      } catch (error) {
-        console.error("Error fetching buses: ", error);
-        toast.error("Error fetching buses: " + error.message);
-      } finally {
-        setGetBusesLoading(false);
-      }
-    };
+  const fetchBuses = async (reload = false) => {
+    try {
+      if (busesData.length > 0 && !reload) return;
+      setGetBusesLoading(true);
+      const buses = await getAllBuses(adminData.organizationId);
+      dispatch(setBusesData(buses));
+    } catch (error) {
+      console.error("Error fetching buses: ", error);
+      toast.error("Error fetching buses: " + error.message);
+    } finally {
+      setGetBusesLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchBuses();
   }, []);
 
@@ -93,16 +102,16 @@ const BusesTable = () => {
                   Sr.No
                 </th>
                 <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
-                  Bus Name
+                  Bus or Route Name
                 </th>
                 <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
-                  Driver Info
+                  Allocated Driver
                 </th>
                 <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
-                  Condition
+                  Status
                 </th>
                 <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
-                  Seats
+                  Capacity
                 </th>
                 <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
                   License Plate
@@ -123,13 +132,27 @@ const BusesTable = () => {
                   }}
                 >
                   <td className="px-2 pl-5 py-3 text-[14px]">{index + 1}</td>
-                  <td className="px-2 py-3 text-[14px]">{data.busName}</td>
-                  <td className="px-2 py-3 text-[14px]">Abdullah</td>
+                  <td className="px-2 py-3 text-[14px]">
+                    {data.busName || "N/A"}
+                  </td>
+                  <td className="px-2 py-3 text-[14px]">
+                    <DriverInfo
+                      driverId={
+                        data.assignedDriverId ? data.assignedDriverId : null
+                      }
+                      busClick={(e) => {
+                        e.stopPropagation();
+                        handleBusClick(data.id);
+                      }}
+                    />
+                  </td>
                   <td className="px-2 py-3 text-[14px]">
                     {data.status.charAt(0).toUpperCase() + data.status.slice(1)}
                   </td>
                   <td className="px-2 py-3 text-[14px]">{data.capacity}</td>
-                  <td className="px-2 py-3 text-[14px]">{data.licensePlate}</td>
+                  <td className="px-2 py-3 text-[14px]">
+                    {data.licensePlate || "N/A"}
+                  </td>
                   <td className="px-2 py-3 text-[14px]">0</td>
                   <td className="px-2 py-3 text-[14px]">
                     <div className="flex flex-row gap-2">
@@ -203,6 +226,79 @@ const BusesTable = () => {
           onClose={hideDeleteBus}
         />
       )}
+
+      {/* Show Assigned Driver Dialog */}
+      {showDriversDialog && (
+        <DriversDialog
+          busId={busId}
+          onSuccess={fetchBuses}
+          onClose={() => setShowDriversDialog(false)}
+        />
+      )}
+    </div>
+  );
+};
+
+const DriverInfo = ({ driverId, busClick }) => {
+  const [gettingDataLoading, setGettingDataLoading] = useState(true);
+  const [driverData, setDriverData] = useState(null);
+
+  useEffect(() => {
+    const fetchDriverData = async () => {
+      try {
+        const data = await getDriverById(driverId);
+        setDriverData(data);
+      } catch (e) {
+        toast.error("Error while getting driver data");
+      } finally {
+        setGettingDataLoading(false);
+      }
+    };
+
+    if (driverId) {
+      fetchDriverData();
+    } else {
+      setGettingDataLoading(false);
+    }
+  }, []);
+
+  return gettingDataLoading ? (
+    <div className="w-20 h-7 rounded-md bg-gray-200 animate-pulse"></div>
+  ) : driverData === null ? (
+    <div className="flex flex-col items-start">
+      <p>No driver assigned</p>
+      <div
+        onClick={busClick}
+        className="text-blue-500 text-[13px] hover:cursor-pointer hover:underline"
+      >
+        Assign Now
+      </div>
+    </div>
+  ) : (
+    <div className="flex flex-row items-center justify-start gap-2">
+      <div className="w-9 h-9 rounded-full overflow-hidden bg-gray-100">
+        {driverData.profileUrl ? (
+          <img
+            src={driverData.profileUrl}
+            alt="Driver Picture"
+            className="object-cover w-full h-full"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <CiUser className="text-gray-900 text-xl" />
+          </div>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <p className="text-[14px]">{driverData.driverName}</p>
+        <p className="text-[12px] text-textLight">{driverData.phoneNumber}</p>
+        <div
+          onClick={busClick}
+          className="text-blue-500 text-[13px] hover:cursor-pointer hover:underline"
+        >
+          Update Driver
+        </div>
+      </div>
     </div>
   );
 };

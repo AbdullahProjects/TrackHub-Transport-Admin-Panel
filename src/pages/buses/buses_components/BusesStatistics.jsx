@@ -7,7 +7,7 @@ const BusesStatistics = () => {
   const busesData = useSelector((state) => state.buses.busesData);
 
   return (
-    <div className="bus-stats grid grid-rows-3 grid-cols-1 md:grid-rows-2 md:grid-cols-2 lg:grid-rows-1 lg:grid-cols-3 gap-4">
+    <div className="bus-stats grid grid-cols-1 md:grid-rows-2 md:grid-cols-2 lg:grid-rows-1 lg:grid-cols-4 gap-4">
       <StatsContainer
         text={"Total Buses"}
         value={busesData.length}
@@ -20,6 +20,13 @@ const BusesStatistics = () => {
         icon={Images.activeBusIcon}
         loading={statsLoading}
         bgColor="#32B35950"
+      />
+      <StatsContainer
+        text={"Inactive Buses"}
+        value={busesData.filter((bus) => bus.status === "inactive").length}
+        icon={Images.activeBusIcon}
+        loading={statsLoading}
+        bgColor="#BFCDDB50"
       />
       <StatsContainer
         text={"Under Maintenance"}

@@ -124,7 +124,7 @@ const EditBus = () => {
                     htmlFor="busName"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Bus Name *
+                    Bus Name <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="text"
@@ -143,7 +143,7 @@ const EditBus = () => {
                     htmlFor="licensePlate"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    License Plate *
+                    License Plate
                   </label>
                   <input
                     type="text"
@@ -151,7 +151,6 @@ const EditBus = () => {
                     name="licensePlate"
                     value={formData.licensePlate}
                     onChange={handleChange}
-                    required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                     placeholder="Enter license plate"
                   />
@@ -162,7 +161,7 @@ const EditBus = () => {
                     htmlFor="capacity"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Capacity *
+                    Capacity <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="number"
@@ -182,7 +181,7 @@ const EditBus = () => {
                     htmlFor="model"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Model *
+                    Model
                   </label>
                   <input
                     type="text"
@@ -190,7 +189,6 @@ const EditBus = () => {
                     name="model"
                     value={formData.model}
                     onChange={handleChange}
-                    required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                     placeholder="Enter bus model"
                   />
@@ -201,7 +199,7 @@ const EditBus = () => {
                     htmlFor="year"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Year *
+                    Year
                   </label>
                   <input
                     type="number"
@@ -209,7 +207,6 @@ const EditBus = () => {
                     name="year"
                     value={formData.year}
                     onChange={handleChange}
-                    required
                     min="1900"
                     max={new Date().getFullYear() + 1}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
@@ -222,7 +219,7 @@ const EditBus = () => {
                     htmlFor="status"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Status *
+                    Status <span className="text-red-600">*</span>
                   </label>
                   <select
                     id="status"
