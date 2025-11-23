@@ -275,7 +275,7 @@ const DriverInfo = ({ driverId, busClick }) => {
       </div>
     </div>
   ) : (
-    <div className="flex flex-row items-center justify-start gap-2">
+    <div className="flex flex-row items-start justify-start gap-2">
       <div className="w-9 h-9 rounded-full overflow-hidden bg-gray-100">
         {driverData.profileUrl ? (
           <img
