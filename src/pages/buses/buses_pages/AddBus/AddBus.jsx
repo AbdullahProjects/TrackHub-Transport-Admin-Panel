@@ -20,6 +20,7 @@ const AddBus = () => {
   const [addingBusLoading, setAddingBusLoading] = useState(false);
   const [formData, setFormData] = useState({
     busName: "",
+    stopName: "",
     licensePlate: "",
     capacity: "",
     model: "",
@@ -78,7 +79,27 @@ const AddBus = () => {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                placeholder="e.g. Route no 01 Defense Morr"
+                placeholder="e.g. Route no 01"
+              />
+            </div>
+
+            {/* Stop Name */}
+            <div>
+              <label
+                htmlFor="stopName"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Stop Name <span className="text-red-600">*</span>
+              </label>
+              <input
+                type="text"
+                id="stopName"
+                name="stopName"
+                value={formData.stopName}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                placeholder="e.g. Defense Morr Stop"
               />
             </div>
 

@@ -105,6 +105,9 @@ const BusesTable = () => {
                   Bus or Route Name
                 </th>
                 <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                  Stop Name
+                </th>
+                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
                   Allocated Driver
                 </th>
                 <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
@@ -134,6 +137,9 @@ const BusesTable = () => {
                   <td className="px-2 pl-5 py-3 text-[14px]">{index + 1}</td>
                   <td className="px-2 py-3 text-[14px]">
                     {data.busName || "N/A"}
+                  </td>
+                  <td className="px-2 py-3 text-[14px]">
+                    {data.stopName || "N/A"}
                   </td>
                   <td className="px-2 py-3 text-[14px]">
                     <DriverInfo
