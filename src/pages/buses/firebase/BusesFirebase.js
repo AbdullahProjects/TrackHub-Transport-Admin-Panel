@@ -9,6 +9,8 @@ import {
   deleteDoc,
   doc,
   setDoc,
+  updateDoc,
+  deleteField,
 } from "firebase/firestore";
 import FirebaseCollections from "../../../utils/common/FirebaseCollectionNames";
 
@@ -94,6 +96,24 @@ const assignDriverToBus = async (busId, driverId) => {
   }
 };
 
+// Clear assignedDriverId from all buses that had this driver assigned
+const clearDriverFromBuses = async (driverId) => {
+  try {
+    const q = query(
+      collection(db, FirebaseCollections.busesCollection),
+      where("assignedDriverId", "==", driverId)
+    );
+    const querySnapshot = await getDocs(q);
+    const updates = querySnapshot.docs.map((busDoc) =>
+      updateDoc(busDoc.ref, { assignedDriverId: deleteField() })
+    );
+    await Promise.all(updates);
+  } catch (e) {
+    console.log("Error while clearing driver from buses: " + e);
+    throw e;
+  }
+};
+
 // Export functions
 export {
   addBus,
@@ -102,4 +122,5 @@ export {
   updateBusDataInFirestore,
   deleteBusFromFirestore,
   assignDriverToBus,
+  clearDriverFromBuses,
 };

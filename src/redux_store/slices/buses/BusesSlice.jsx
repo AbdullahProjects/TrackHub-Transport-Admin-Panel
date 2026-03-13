@@ -23,9 +23,18 @@ const BusesSlice = createSlice({
     },
     deleteBus(state, action){
         state.busesData = state.busesData.filter(bus => bus.id !== action.payload);
-    }
+    },
+    clearDriverFromBusesData(state, action) {
+        state.busesData = state.busesData.map((bus) => {
+            if (bus.assignedDriverId === action.payload) {
+                const { assignedDriverId, ...rest } = bus;
+                return rest;
+            }
+            return bus;
+        });
+    },
   },
 });
 
-export const { setBusesData, clearBusesData, addBusInExistingData, editBus, deleteBus } = BusesSlice.actions;
+export const { setBusesData, clearBusesData, addBusInExistingData, editBus, deleteBus, clearDriverFromBusesData } = BusesSlice.actions;
 export default BusesSlice.reducer;

@@ -1,8 +1,10 @@
 import React from "react";
 import { toast } from "react-toastify";
 import { deleteDriverFromFirestore } from "../firebase/DriversFirebase";
+import { clearDriverFromBuses } from "../../buses/firebase/BusesFirebase";
 import { useDispatch } from "react-redux";
 import { deleteDriver } from "../../../redux_store/slices/drivers/DriversSlide";
+import { clearDriverFromBusesData } from "../../../redux_store/slices/buses/BusesSlice";
 
 const DeleteDriver = ({
   deleteDriverId,
@@ -14,14 +16,17 @@ const DeleteDriver = ({
 
   const handleDeleteDriver = async () => {
     try {
-      console.log("Deleting bus with ID:", deleteDriverId);
       setDeleteDriverLoading(true);
-      await deleteDriverFromFirestore(deleteDriverId);
+      await Promise.all([
+        deleteDriverFromFirestore(deleteDriverId),
+        clearDriverFromBuses(deleteDriverId),
+      ]);
       dispatch(deleteDriver(deleteDriverId));
+      dispatch(clearDriverFromBusesData(deleteDriverId));
       toast.success("Driver deleted successfully");
     } catch (error) {
-      console.error("Error deleting bus: ", error);
-      toast.error("Error deleting bus: " + error.message);
+      console.error("Error deleting driver: ", error);
+      toast.error("Error deleting driver: " + error.message);
     } finally {
       setDeleteDriverLoading(false);
       onClose();
