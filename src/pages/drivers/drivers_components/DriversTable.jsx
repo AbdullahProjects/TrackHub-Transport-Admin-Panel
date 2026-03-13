@@ -138,14 +138,14 @@ const DriversTable = () => {
                           </div>
                         )}
                       </div>
-                      <p>{data.driverName}</p>
+                      <p>{data.name}</p>
                     </div>
                   </td>
                   <td className="px-2 py-3 text-[14px]">
                     <LoginCredentialsData data={data} />
                   </td>
                   <td className="px-2 py-3 text-[14px]">
-                    {data.driverEmail || "N/A"}
+                    {data.email || "N/A"}
                   </td>
                   <td className="px-2 py-3 text-[14px]">{data.phoneNumber}</td>
                   <td className="px-2 py-3 text-[14px]">

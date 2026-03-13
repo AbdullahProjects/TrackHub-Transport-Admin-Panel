@@ -44,7 +44,7 @@ const ViewDriverDetails = ({ data, onClose }) => {
             <div className="flex items-center gap-4 bg-gray-50 p-3 rounded-md">
               <FaUser className="text-primary text-md" />
               <p className="text-md">
-                <strong>Name:</strong> {data.driverName}
+                <strong>Name:</strong> {data.name}
               </p>
             </div>
 

@@ -119,7 +119,7 @@ const DriversDialog = ({ busId, onSuccess, onClose }) => {
                         )}
                       </div>
                       <div className="flex flex-col flex-1">
-                        <p className="text-[14px]">{data.driverName}</p>
+                        <p className="text-[14px]">{data.name}</p>
                         <p className="text-[12px] text-textLight">
                           {data.phoneNumber}
                         </p>

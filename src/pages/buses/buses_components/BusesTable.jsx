@@ -296,7 +296,7 @@ const DriverInfo = ({ driverId, busClick }) => {
         )}
       </div>
       <div className="flex flex-col">
-        <p className="text-[14px]">{driverData.driverName}</p>
+        <p className="text-[14px]">{driverData.name}</p>
         <p className="text-[12px] text-textLight">{driverData.phoneNumber}</p>
         <div
           onClick={busClick}

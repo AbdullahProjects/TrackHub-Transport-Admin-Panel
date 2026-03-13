@@ -44,8 +44,8 @@ const EditDriver = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleUsername = (driverNameChange) => {
-    const namePart = driverNameChange;
+  const handleUsername = (nameChange) => {
+    const namePart = nameChange;
     return `THDR-${namePart}`;
   };
 
@@ -70,8 +70,8 @@ const EditDriver = () => {
         const data = await getDriverById(driverId);
         setFormData({
           id: data.id,
-          driverName: data.driverName,
-          driverEmail: data.driverEmail,
+          name: data.name,
+          email: data.email,
           phoneNumber: data.phoneNumber,
           registeredDate: data.registeredDate,
           profileUrl: data.profileUrl,
@@ -105,7 +105,7 @@ const EditDriver = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Validate input fields
-    const nameError = validateName(formData.driverName);
+    const nameError = validateName(formData.name);
     const phoneError = validatePhone(formData.phoneNumber);
     const passwordError = validatePassword(formData.password);
     setErrors({ name: nameError, phone: phoneError, password: passwordError });
@@ -251,16 +251,16 @@ const EditDriver = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label
-                    htmlFor="driverName"
+                    htmlFor="name"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
                     Driver Name <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="text"
-                    id="driverName"
-                    name="driverName"
-                    value={formData.driverName}
+                    id="name"
+                    name="name"
+                    value={formData.name}
                     onChange={(e) => {
                       handleChange(e);
                       const generatedUsername = handleUsername(e.target.value);
@@ -280,7 +280,7 @@ const EditDriver = () => {
 
                 <div>
                   <label
-                    htmlFor="driverEmail"
+                    htmlFor="email"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
                     Email{" "}
@@ -290,9 +290,9 @@ const EditDriver = () => {
                   </label>
                   <input
                     type="email"
-                    id="driverEmail"
-                    name="driverEmail"
-                    value={formData.driverEmail}
+                    id="email"
+                    name="email"
+                    value={formData.email}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                     placeholder="Enter driver email"
