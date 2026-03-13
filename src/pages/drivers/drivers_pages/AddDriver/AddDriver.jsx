@@ -56,8 +56,8 @@ const AddDriver = () => {
   const navigate = useNavigate();
   const [addingDriverLoading, setAddingDriverLoading] = useState(false);
   const [formData, setFormData] = useState({
-    driverName: null,
-    driverEmail: null,
+    name: null,
+    email: null,
     phoneNumber: null,
     registeredDate: null,
     profileUrl: null,
@@ -75,15 +75,15 @@ const AddDriver = () => {
     }));
   };
 
-  const handleUsername = (driverNameChange) => {
-    const namePart = driverNameChange;
+  const handleUsername = (nameChange) => {
+    const namePart = nameChange;
     return `THDR-${namePart}`;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Validate input fields
-    const nameError = validateName(formData.driverName);
+    const nameError = validateName(formData.name);
     const phoneError = validatePhone(formData.phoneNumber);
     const passwordError = validatePassword(formData.password);
     setErrors({ name: nameError, phone: phoneError, password: passwordError });
@@ -201,16 +201,16 @@ const AddDriver = () => {
             {/* Driver Name */}
             <div>
               <label
-                htmlFor="driverName"
+                htmlFor="name"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Driver Name <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
-                id="driverName"
-                name="driverName"
-                value={formData.driverName}
+                id="name"
+                name="name"
+                value={formData.name}
                 onChange={(e) => {
                   handleChange(e);
                   const generatedUsername = handleUsername(e.target.value);
@@ -231,7 +231,7 @@ const AddDriver = () => {
             {/* Driver Email */}
             <div>
               <label
-                htmlFor="driverEmail"
+                htmlFor="email"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Email{" "}
@@ -239,9 +239,9 @@ const AddDriver = () => {
               </label>
               <input
                 type="email"
-                id="driverEmail"
-                name="driverEmail"
-                value={formData.driverEmail}
+                id="email"
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 placeholder="e.g. driver@gmail.com"
