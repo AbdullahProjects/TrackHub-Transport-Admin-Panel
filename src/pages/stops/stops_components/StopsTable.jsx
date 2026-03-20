@@ -128,7 +128,7 @@ const StopsTable = () => {
                 onClick={() => showStopDetails(row)}
               >
                 <td className="border-r border-tableLightBorder px-2 py-3 font-mono text-xs text-gray-800">
-                  {row.stopId}
+                  {row.id}
                 </td>
                 <td className="max-w-[220px] border-r border-tableLightBorder px-2 py-3 text-gray-700">
                   <span className="line-clamp-2" title={row.formattedAddress}>
@@ -150,15 +150,18 @@ const StopsTable = () => {
                   <div className="flex flex-row gap-2">
                     <div
                       onClick={(e) => e.stopPropagation()}
-                      className="icon cursor-pointer rounded-sm border border-menuActiveColor p-1 transition-all duration-200 hover:border-primary hover:bg-primary hover:text-white"
+                      className="icon border border-menuActiveColor rounded-sm p-1 cursor-pointer transition-all duration-200 hover:bg-primary hover:border-primary hover:text-white"
                     >
                       <Link to={`/stops/edit/${row.id}`}>
                         <MdModeEdit />
                       </Link>
                     </div>
                     <div
-                      onClick={(e) => showDeleteStop(row.id, e)}
-                      className="icon cursor-pointer rounded-sm border border-menuActiveColor p-1 transition-all duration-200 hover:bg-red-600 hover:border-red-600 hover:text-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        showDeleteStop(row.id);
+                      }}
+                      className="icon border border-menuActiveColor rounded-sm p-1 cursor-pointer transition-all duration-200 hover:bg-red-600 hover:border-red-600 hover:text-white"
                     >
                       <AiFillDelete />
                     </div>

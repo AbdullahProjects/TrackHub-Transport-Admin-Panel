@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { MdDirectionsBus, MdPerson, MdConfirmationNumber } from "react-icons/md";
+import { MdDirectionsBus, MdPerson, MdPlace } from "react-icons/md";
 import { FaCar, FaUsers, FaCircle } from "react-icons/fa";
 import { Link } from "react-router";
 import RouteNames from "../../../utils/routing/RouteNames";
 import { AiFillDelete } from "react-icons/ai";
 import { MdModeEdit } from "react-icons/md";
 import { getDriverById } from "../../drivers/firebase/DriversFirebase";
+import { useSelector } from "react-redux";
 
 const ViewBusDetails = ({ data, onClose, onDeleteClick }) => {
   const [driverName, setDriverName] = useState(null);
+  const stopsData = useSelector((state) => state.stops.stopsData);
 
   useEffect(() => {
     if (data.assignedDriverId) {
@@ -84,10 +86,24 @@ const ViewBusDetails = ({ data, onClose, onDeleteClick }) => {
             </div>
 
             <div className="flex items-center gap-3 rounded-md bg-gray-50 p-3">
-              <MdConfirmationNumber className="shrink-0 text-lg text-primary" />
+              <MdPlace className="shrink-0 text-lg text-primary" />
               <div className="min-w-0">
-                <p className="text-sm font-medium text-gray-500">Stop name</p>
-                <p className="text-base">{data.stopName || "N/A"}</p>
+                <p className="text-sm font-medium text-gray-500">Route stops</p>
+                {Array.isArray(data.stops) && data.stops.length > 0 ? (
+                  <ol className="mt-1 list-decimal list-inside space-y-0.5 text-base">
+                    {data.stops.map((stopId, idx) => {
+                      const stop = stopsData.find((s) => s.id === stopId);
+                      const label = stop?.landmark || stop?.formattedAddress || stop?.stopId || stopId;
+                      return (
+                        <li key={stopId}>
+                          {label}
+                        </li>
+                      );
+                    })}
+                  </ol>
+                ) : (
+                  <p className="text-base">No stops assigned</p>
+                )}
               </div>
             </div>
 

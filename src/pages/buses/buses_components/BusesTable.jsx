@@ -13,12 +13,15 @@ import { BeatLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { CiUser } from "react-icons/ci";
 import { setBusesData } from "../../../redux_store/slices/buses/BusesSlice";
+import { setStopsData } from "../../../redux_store/slices/stops/StopsSlice";
 import { getDriverById } from "../../drivers/firebase/DriversFirebase";
+import { getAllStops } from "../../stops/firebase/StopsFirebase";
 import DriversDialog from "./DriversDialog";
 
 const BusesTable = () => {
   const adminData = useSelector((state) => state.auth.adminData);
   const busesData = useSelector((state) => state.buses.busesData);
+  const stopsData = useSelector((state) => state.stops.stopsData);
   const dispatch = useDispatch();
 
   const [getBusesLoading, setGetBusesLoading] = useState(false);
@@ -73,6 +76,14 @@ const BusesTable = () => {
     fetchBuses();
   }, []);
 
+  useEffect(() => {
+    if (stopsData.length === 0 && adminData?.organizationId) {
+      getAllStops(adminData.organizationId)
+        .then((stops) => dispatch(setStopsData(stops)))
+        .catch(() => {});
+    }
+  }, [adminData?.organizationId, stopsData.length, dispatch]);
+
   return (
     <div>
       <div className="buses-table-container mt-4 overflow-x-auto rounded-md bg-white shadow-sm shadow-black/5">
@@ -105,7 +116,7 @@ const BusesTable = () => {
                   Bus or Route Name
                 </th>
                 <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
-                  Stop Name
+                  Stops
                 </th>
                 <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   Allocated Driver
@@ -118,9 +129,6 @@ const BusesTable = () => {
                 </th>
                 <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   License Plate
-                </th>
-                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
-                  Total Stops
                 </th>
                 <th className="px-2 py-3 text-[14px] font-semibold">Actions</th>
               </tr>
@@ -139,7 +147,9 @@ const BusesTable = () => {
                     {data.busName || "N/A"}
                   </td>
                   <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">
-                    {data.stopName || "N/A"}
+                    {Array.isArray(data.stops) && data.stops.length > 0
+                      ? `${data.stops.length} stop${data.stops.length !== 1 ? "s" : ""}`
+                      : "—"}
                   </td>
                   <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">
                     <DriverInfo
@@ -159,7 +169,6 @@ const BusesTable = () => {
                   <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">
                     {data.licensePlate || "N/A"}
                   </td>
-                  <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">0</td>
                   <td className="px-2 py-3 text-[14px]">
                     <div className="flex flex-row gap-2">
                       <div
