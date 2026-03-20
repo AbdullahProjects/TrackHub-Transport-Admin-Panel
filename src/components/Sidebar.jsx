@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router";
 import Images from "../utils/common/Images";
 import RouteNames from "../utils/routing/RouteNames";
 import { AiOutlineLogout } from "react-icons/ai";
+import { MdOutlinePlace } from "react-icons/md";
 import { logoutUser } from "../pages/login/firebase/LoginFirebase";
 import { useDispatch } from "react-redux";
 import { clearAdminData } from "../redux_store/slices/auth/AuthSlice";
@@ -26,6 +27,12 @@ const Sidebar = ({ isOpen, onClose }) => {
     },
     { path: RouteNames.drivers, label: "Drivers", icon: Images.driverMenuIcon },
     { path: RouteNames.buses, label: "Buses", icon: Images.busMenuIcon },
+    {
+      path: RouteNames.stops,
+      label: "Stops",
+      icon: null,
+      MenuIcon: MdOutlinePlace,
+    },
     {
       path: RouteNames.organization,
       label: "Organization",
@@ -69,7 +76,9 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div>
           {/* Menu Items */}
           <nav>
-            {menuItems.map((item) => (
+            {menuItems.map((item) => {
+              const MenuIcon = item.MenuIcon;
+              return (
               <Link
                 key={item.path}
                 to={item.path}
@@ -80,14 +89,19 @@ const Sidebar = ({ isOpen, onClose }) => {
                     : "hover:bg-menuActiveColor/30 hover:text-white"
                 }`}
               >
-                <img
-                  src={item.icon}
-                  alt="Menu Icon"
-                  className="w-[23px] h-[23px] object-contain"
-                />
+                {MenuIcon ? (
+                  <MenuIcon className="h-[23px] w-[23px]" aria-hidden />
+                ) : (
+                  <img
+                    src={item.icon}
+                    alt="Menu Icon"
+                    className="h-[23px] w-[23px] object-contain"
+                  />
+                )}
                 <span className="font-medium text-[14px]">{item.label}</span>
               </Link>
-            ))}
+            );
+            })}
 
             <div className="w-full h-px bg-gray-300"></div>
 

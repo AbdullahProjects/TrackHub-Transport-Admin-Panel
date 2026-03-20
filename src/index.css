@@ -21,7 +21,7 @@ body{
 input , .MuiPickersInputBase-root{
   height: 40px !important;
   padding: 10px 15px !important;
-  /* border: 1px solid var(--color-tableDarkBorder) !important; */
+  border: 1px solid var(--color-tableDarkBorder) !important;
   border-radius: 6px !important;
   font-size: 14px !important;
   color: var(--color-textLight) !important;

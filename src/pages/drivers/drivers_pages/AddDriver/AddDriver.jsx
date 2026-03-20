@@ -280,7 +280,7 @@ const AddDriver = () => {
                 htmlFor="registeredDate"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Registered Date <span className="text-red-600">*</span>
+                Joining Date <span className="text-red-600">*</span>
               </label>
               <CustomDatePicker
                 value={formData.registeredDate}

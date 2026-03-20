@@ -1,15 +1,12 @@
 import React from "react";
 import DashboardStatistics from "./dashboard_components/DashboardStatistics";
-import OngoingBuses from "./dashboard_components/OngoingBuses";
+import DashboardCharts from "./dashboard_components/DashboardCharts";
 
 const Dashboard = () => {
   return (
-    <div>
-      {/* Statistics */}
+    <div className="mb-14">
       <DashboardStatistics />
-
-      {/* Ongoing Buses */}
-      {/* <OngoingBuses /> */}
+      <DashboardCharts />
     </div>
   );
 };

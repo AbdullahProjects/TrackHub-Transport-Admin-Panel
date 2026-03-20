@@ -5,15 +5,13 @@ const DashboardStatsSlice = createSlice({
   initialState: {
     drivers: null,
     buses: null,
-    students: null,
-    reports: null,
+    stops: null,
   },
   reducers: {
     setStatsData(state, action) {
       state.drivers = action.payload.drivers;
       state.buses = action.payload.buses;
-      state.students = action.payload.students;
-      state.reports = action.payload.reports;
+      state.stops = action.payload.stops;
     },
   },
 });

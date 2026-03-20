@@ -11,6 +11,7 @@ import {
   setDoc,
   updateDoc,
   deleteField,
+  serverTimestamp,
 } from "firebase/firestore";
 import FirebaseCollections from "../../../utils/common/FirebaseCollectionNames";
 
@@ -22,6 +23,7 @@ const addBus = async (busData) => {
     const data = {
       ...busData,
       id: docRef.id,
+      addedAt: serverTimestamp(),
     };
     await setDoc(docRef, data);
   } catch (e) {

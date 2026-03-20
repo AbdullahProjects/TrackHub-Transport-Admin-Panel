@@ -75,7 +75,7 @@ const BusesTable = () => {
 
   return (
     <div>
-      <div className="buses-table-container overflow-x-auto lg:overflow-x-auto bg-white mt-4 rounded-md shadow-sm shadow-black/5">
+      <div className="buses-table-container mt-4 overflow-x-auto rounded-md bg-white shadow-sm shadow-black/5">
         {getBusesLoading ? (
           <div className="flex flex-col gap-3 py-12 justify-center items-center">
             <BeatLoader color={"var(--color-primary)"} />
@@ -95,53 +95,53 @@ const BusesTable = () => {
             </p>
           </div>
         ) : (
-          <table className="w-[150%] lg:w-full">
+          <table className="w-full min-w-[900px]">
             <thead className="border-b-2 border-tableDarkBorder">
               <tr className="text-left">
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
-                  Sr.No
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
+                  Bus ID
                 </th>
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   Bus or Route Name
                 </th>
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   Stop Name
                 </th>
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   Allocated Driver
                 </th>
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   Status
                 </th>
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   Capacity
                 </th>
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   License Plate
                 </th>
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   Total Stops
                 </th>
-                <th className="px-2 py-3 text-[14px]">Actions</th>
+                <th className="px-2 py-3 text-[14px] font-semibold">Actions</th>
               </tr>
             </thead>
             <tbody>
               {busesData.map((data, index) => (
                 <tr
                   key={index}
-                  className="border-b border-tableLightBorder hover:cursor-pointer hover:bg-gray-50"
+                  className="cursor-pointer border-b border-tableLightBorder transition-colors hover:bg-gray-50"
                   onClick={() => {
                     showBusDetails(data);
                   }}
                 >
-                  <td className="px-2 pl-5 py-3 text-[14px]">{index + 1}</td>
-                  <td className="px-2 py-3 text-[14px]">
+                  <td className="border-r border-tableLightBorder px-2 pl-5 py-3 font-mono text-[14px]">{data.id}</td>
+                  <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">
                     {data.busName || "N/A"}
                   </td>
-                  <td className="px-2 py-3 text-[14px]">
+                  <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">
                     {data.stopName || "N/A"}
                   </td>
-                  <td className="px-2 py-3 text-[14px]">
+                  <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">
                     <DriverInfo
                       driverId={
                         data.assignedDriverId ? data.assignedDriverId : null
@@ -152,14 +152,14 @@ const BusesTable = () => {
                       }}
                     />
                   </td>
-                  <td className="px-2 py-3 text-[14px]">
+                  <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">
                     {data.status.charAt(0).toUpperCase() + data.status.slice(1)}
                   </td>
-                  <td className="px-2 py-3 text-[14px]">{data.capacity}</td>
-                  <td className="px-2 py-3 text-[14px]">
+                  <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">{data.capacity}</td>
+                  <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">
                     {data.licensePlate || "N/A"}
                   </td>
-                  <td className="px-2 py-3 text-[14px]">0</td>
+                  <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">0</td>
                   <td className="px-2 py-3 text-[14px]">
                     <div className="flex flex-row gap-2">
                       <div
@@ -220,7 +220,15 @@ const BusesTable = () => {
 
       {/* View Bus Details Dialog */}
       {viewBusDetail && !deleteBus && (
-        <ViewBusDetails data={viewBusDetailData} onClose={hideBusDetails} />
+        <ViewBusDetails
+          data={viewBusDetailData}
+          onClose={hideBusDetails}
+          onDeleteClick={(id) => {
+            hideBusDetails();
+            setDeleteBusId(id);
+            setDeleteBus(true);
+          }}
+        />
       )}
 
       {/* Delete Bus Dialog */}

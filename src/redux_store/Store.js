@@ -4,6 +4,7 @@ import adminSliceReducer from "./slices/auth/AuthSlice";
 import OrganizationReducer from "./slices/organization/OrganizationSlice";
 import BusesReducer from "./slices/buses/BusesSlice";
 import DriversReducer from "./slices/drivers/DriversSlide";
+import StopsReducer from "./slices/stops/StopsSlice";
 
 export const Store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const Store = configureStore({
     organization: OrganizationReducer,
     buses: BusesReducer,
     drivers: DriversReducer,
+    stops: StopsReducer,
   },
 });

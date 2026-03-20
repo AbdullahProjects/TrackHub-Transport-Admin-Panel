@@ -69,7 +69,7 @@ const DriversTable = () => {
 
   return (
     <div>
-      <div className="drivers-table-container overflow-x-auto lg:overflow-x-auto bg-white mt-4 rounded-md shadow-sm shadow-black/5">
+      <div className="drivers-table-container mt-4 overflow-x-auto rounded-md bg-white shadow-sm shadow-black/5">
         {getDriversLoading ? (
           <div className="flex flex-col gap-3 py-12 justify-center items-center">
             <BeatLoader color={"var(--color-primary)"} />
@@ -89,41 +89,41 @@ const DriversTable = () => {
             </p>
           </div>
         ) : (
-          <table className="w-[150%] lg:w-full">
+          <table className="w-full min-w-[720px]">
             <thead className="border-b-2 border-tableDarkBorder">
               <tr className="text-left">
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
-                  Sr.No
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
+                  Driver ID
                 </th>
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   Driver Name
                 </th>
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   Login Credentials
                 </th>
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   Email
                 </th>
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
                   Phone Number
                 </th>
-                <th className="px-2 py-3 text-[14px] border-r border-tableLightBorder">
-                  Registered Date
+                <th className="border-r border-tableLightBorder px-2 py-3 text-[14px] font-semibold">
+                  Joining Date
                 </th>
-                <th className="px-2 py-3 text-[14px]">Actions</th>
+                <th className="px-2 py-3 text-[14px] font-semibold">Actions</th>
               </tr>
             </thead>
             <tbody>
               {driversData.map((data, index) => (
                 <tr
                   key={index}
-                  className="border-b border-tableLightBorder hover:cursor-pointer hover:bg-gray-50"
+                  className="cursor-pointer border-b border-tableLightBorder transition-colors hover:bg-gray-50"
                   onClick={() => {
                     showDriverDetails(data);
                   }}
                 >
-                  <td className="px-2 pl-5 py-3 text-[14px]">{index + 1}</td>
-                  <td className="px-2 py-3 text-[14px]">
+                  <td className="border-r border-tableLightBorder font-mono px-2 pl-5 py-3 text-[14px]">{data.id}</td>
+                  <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">
                     <div className="flex flex-row items-center justify-start gap-2">
                       <div className="w-9 h-9 rounded-full overflow-hidden bg-gray-100">
                         {data.profileUrl !== null ? (
@@ -141,14 +141,14 @@ const DriversTable = () => {
                       <p>{data.name}</p>
                     </div>
                   </td>
-                  <td className="px-2 py-3 text-[14px]">
+                  <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">
                     <LoginCredentialsData data={data} />
                   </td>
-                  <td className="px-2 py-3 text-[14px]">
+                  <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">
                     {data.email || "N/A"}
                   </td>
-                  <td className="px-2 py-3 text-[14px]">{data.phoneNumber}</td>
-                  <td className="px-2 py-3 text-[14px]">
+                  <td className="border-r border-tableLightBorder font-mono px-2 py-3 text-[14px]">{data.phoneNumber}</td>
+                  <td className="border-r border-tableLightBorder px-2 py-3 text-[14px]">
                     {data.registeredDate}
                   </td>
                   <td className="px-2 py-3 text-[14px]">
@@ -214,6 +214,11 @@ const DriversTable = () => {
         <ViewDriverDetails
           data={viewDriverDetailData}
           onClose={hideDriverDetails}
+          onDeleteClick={(id) => {
+            hideDriverDetails();
+            setDeleteDriverId(id);
+            setDeleteDriver(true);
+          }}
         />
       )}
 

@@ -7,6 +7,9 @@ import Dashboard from "../../pages/dashboard/Dashboard";
 import Buses from "../../pages/buses/buses_pages/AllBuses/Buses";
 import AddBus from "../../pages/buses/buses_pages/AddBus/AddBus";
 import EditBus from "../../pages/buses/buses_pages/EditBus/EditBus";
+import Stops from "../../pages/stops/stops_pages/AllStops/Stops";
+import AddStop from "../../pages/stops/stops_pages/AddStop/AddStop";
+import EditStop from "../../pages/stops/stops_pages/EditStop/EditStop";
 import Drivers from "../../pages/drivers/drivers_pages/AllDrivers/Drivers";
 import AddDriver from "../../pages/drivers/drivers_pages/AddDriver/AddDriver";
 import EditDriver from "../../pages/drivers/drivers_pages/EditDriver/EditDriver";
@@ -43,6 +46,9 @@ const AppRoutes = () => {
         <Route path={RouteNames.buses} element={<Buses />} />
         <Route path={RouteNames.addBus} element={<AddBus />} />
         <Route path={RouteNames.editBus} element={<EditBus />} />
+        <Route path={RouteNames.stops} element={<Stops />} />
+        <Route path={RouteNames.addStop} element={<AddStop />} />
+        <Route path={RouteNames.editStop} element={<EditStop />} />
         <Route path={RouteNames.drivers} element={<Drivers />} />
         <Route path={RouteNames.addDriver} element={<AddDriver />} />
         <Route path={RouteNames.editDriver} element={<EditDriver />} />
