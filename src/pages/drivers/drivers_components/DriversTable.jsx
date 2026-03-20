@@ -16,10 +16,16 @@ import { CiUser } from "react-icons/ci";
 import { GoEye } from "react-icons/go";
 import { GoEyeClosed } from "react-icons/go";
 
-const DriversTable = () => {
+const DriversTable = ({ searchTerm = "" }) => {
   const adminData = useSelector((state) => state.auth.adminData);
   const driversData = useSelector((state) => state.drivers.driversData);
   const dispatch = useDispatch();
+
+  const filteredDrivers = React.useMemo(() => {
+    if (!searchTerm.trim()) return driversData;
+    const q = searchTerm.trim().toLowerCase();
+    return driversData.filter((d) => (d.name || "").toLowerCase().includes(q));
+  }, [driversData, searchTerm]);
 
   // const [busesData, setBusesData] = useState([]);
   const [getDriversLoading, setGetDriversLoading] = useState(false);
@@ -88,6 +94,10 @@ const DriversTable = () => {
               adding your first driver to begin managing your fleet.
             </p>
           </div>
+        ) : filteredDrivers.length === 0 ? (
+          <div className="flex flex-col gap-3 py-12 justify-center items-center">
+            <p className="text-textLight text-sm">No drivers match your search.</p>
+          </div>
         ) : (
           <table className="w-full min-w-[720px]">
             <thead className="border-b-2 border-tableDarkBorder">
@@ -114,7 +124,7 @@ const DriversTable = () => {
               </tr>
             </thead>
             <tbody>
-              {driversData.map((data, index) => (
+              {filteredDrivers.map((data, index) => (
                 <tr
                   key={index}
                   className="cursor-pointer border-b border-tableLightBorder transition-colors hover:bg-gray-50"

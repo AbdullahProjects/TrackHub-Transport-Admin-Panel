@@ -18,11 +18,26 @@ import { getDriverById } from "../../drivers/firebase/DriversFirebase";
 import { getAllStops } from "../../stops/firebase/StopsFirebase";
 import DriversDialog from "./DriversDialog";
 
-const BusesTable = () => {
+const BusesTable = ({ searchTerm = "" }) => {
   const adminData = useSelector((state) => state.auth.adminData);
   const busesData = useSelector((state) => state.buses.busesData);
   const stopsData = useSelector((state) => state.stops.stopsData);
   const dispatch = useDispatch();
+
+  const filteredBuses = React.useMemo(() => {
+    if (!searchTerm.trim()) return busesData;
+    const q = searchTerm.trim().toLowerCase();
+    return busesData.filter((bus) => {
+      const routeMatch = (bus.busName || "").toLowerCase().includes(q);
+      if (routeMatch) return true;
+      const stopIds = Array.isArray(bus.stops) ? bus.stops : [];
+      return stopIds.some((id) => {
+        const stop = stopsData.find((s) => s.id === id);
+        const label = stop ? (stop.landmark || stop.formattedAddress || stop.stopId || "").toLowerCase() : "";
+        return label.includes(q);
+      });
+    });
+  }, [busesData, stopsData, searchTerm]);
 
   const [getBusesLoading, setGetBusesLoading] = useState(false);
   const [viewBusDetail, setViewBusDetail] = useState(false);
@@ -105,6 +120,10 @@ const BusesTable = () => {
               your first bus to begin managing your fleet.
             </p>
           </div>
+        ) : filteredBuses.length === 0 ? (
+          <div className="flex flex-col gap-3 py-12 justify-center items-center">
+            <p className="text-textLight text-sm">No buses match your search.</p>
+          </div>
         ) : (
           <table className="w-full min-w-[900px]">
             <thead className="border-b-2 border-tableDarkBorder">
@@ -134,7 +153,7 @@ const BusesTable = () => {
               </tr>
             </thead>
             <tbody>
-              {busesData.map((data, index) => (
+              {filteredBuses.map((data, index) => (
                 <tr
                   key={index}
                   className="cursor-pointer border-b border-tableLightBorder transition-colors hover:bg-gray-50"

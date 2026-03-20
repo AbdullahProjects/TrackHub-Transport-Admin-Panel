@@ -18,10 +18,16 @@ const formatDate = (addedAt) => {
   return d.toLocaleString();
 };
 
-const StopsTable = () => {
+const StopsTable = ({ searchTerm = "" }) => {
   const adminData = useSelector((state) => state.auth.adminData);
   const stopsData = useSelector((state) => state.stops.stopsData);
   const dispatch = useDispatch();
+
+  const filteredStops = React.useMemo(() => {
+    if (!searchTerm.trim()) return stopsData;
+    const q = searchTerm.trim().toLowerCase();
+    return stopsData.filter((s) => (s.landmark || "").toLowerCase().includes(q));
+  }, [stopsData, searchTerm]);
 
   const [getStopsLoading, setGetStopsLoading] = useState(false);
   const [viewDetail, setViewDetail] = useState(false);
@@ -121,7 +127,14 @@ const StopsTable = () => {
             </tr>
           </thead>
           <tbody>
-            {stopsData.map((row) => (
+            {filteredStops.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="py-12 text-center text-sm text-textLight">
+                  No stops match your search.
+                </td>
+              </tr>
+            ) : (
+              filteredStops.map((row) => (
               <tr
                 key={row.id}
                 className="cursor-pointer border-b border-tableLightBorder text-sm transition-colors hover:bg-gray-50"
@@ -168,7 +181,8 @@ const StopsTable = () => {
                   </div>
                 </td>
               </tr>
-            ))}
+              ))
+            )}
           </tbody>
         </table>
       </div>
